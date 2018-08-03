@@ -3,7 +3,7 @@
     ["env", {
       "modules": false,
       "targets": {
-        "browsers": "> 1%",
+        "browsers": "last 1 Chrome version, last 1 iOS version, last 1 ChromeAndroid version",
         "uglify": true
       },
       "useBuiltIns": true
