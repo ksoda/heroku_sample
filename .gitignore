@@ -13,19 +13,19 @@
 !/log/.keep
 !/tmp/.keep
 
-/elm-stuff
+# Ignore uploaded files in development
+/storage/*
+
 /node_modules
 /yarn-error.log
 
+/public/assets
 .byebug_history
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
 /public/packs
 /public/packs-test
-/elm-stuff
 /node_modules
 yarn-debug.log*
 .yarn-integrity
-
-.terraform/
-*.tfstate
-*.tfstate.backup
-
