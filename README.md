@@ -1,24 +1,15 @@
-# README
+# Getting Started
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Install
+[Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)
 
-Things you may want to cover:
+```sh
+terraform init
+pip3 install haikunator
+export name=(python3 -c "from haikunator import Haikunator; print(Haikunator().haikunate())")
+terraform apply -var name=$name
+ terraform apply -var name=$name -var email=ken0@example.test -var api_key=blah-blah-blah
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+heroku git:remote -a $name
+git push heroku master
+```
