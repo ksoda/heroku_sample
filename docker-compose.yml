@@ -1,0 +1,32 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+  app: &app
+    build: .
+    volumes:
+      - .:/myapp
+      - vendor_bundle:/usr/local/bundle
+      - node_modules:/myapp/node_modules
+  web:
+    <<: *app
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      # - serve
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=serve
+  serve:
+    <<: *app
+    command: bin/webpack-dev-server
+    ports:
+      - "3035:3035"
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+volumes:
+  vendor_bundle:
+  node_modules:
