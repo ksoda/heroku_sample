@@ -34,9 +34,10 @@ describe TodosController do
     it 'returns the todo' do
       post '/todos', params: { title: 'title', created_by: 'John' }
       id = json['id']
+
       get "/todos/#{id}"
-      value(json['id']).must_be :eql?, id
       value(response).must_be :successful?
+      value(json['id']).must_be :eql?, id
     end
 
     it 'returns status code 404 when the record does not exist' do
