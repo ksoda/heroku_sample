@@ -30,4 +30,25 @@ describe TodosController do
       value(response).must_be :unprocessable?
     end
   end
+  describe 'GET /todos/:id' do
+    it 'returns the todo' do
+      post '/todos', params: { title: 'title', created_by: 'John' }
+      id = json['id']
+      get "/todos/#{id}"
+      value(json['id']).must_be :eql?, id
+      value(response).must_be :successful?
+    end
+
+    it 'returns status code 404 when the record does not exist' do
+      id = Todo.maximum(:id).succ
+      get "/todos/#{id}"
+      value(response).must_be :not_found?
+    end
+  end
+  describe 'DELETE /todos/:id' do
+    it 'returns status code 204' do
+      delete "/todos/#{Todo.first.id}"
+      value(response).must_be :no_content?
+    end
+  end
 end

@@ -11,6 +11,17 @@ class TodosController < ApplicationController
     render json: todo, status: :created
   end
 
+  def show
+    todo = find_todo
+    render json: todo, status: :ok
+  end
+
+  def destroy
+    todo = find_todo
+    todo.destroy! # TODO: handle the error
+    head :no_content
+  end
+
   private
 
   def todo_params

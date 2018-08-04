@@ -4,6 +4,9 @@ AllCops:
     - "db/schema.rb"
     - "node_modules/**/*"
     - 'vendor/**/*'
+Metrics/BlockLength:
+  Exclude:
+    - 'test/**/*'
 Rails:
   Enabled: true
 Metrics/LineLength:
