@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+irondish:
+  name: Iron the dishes
   done: false
   todo: one
 
-two:
-  name: MyString
+takesalad:
+  name: Take salad out of the oven
   done: false
   todo: two

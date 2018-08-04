@@ -6,6 +6,10 @@ describe Item do
   let(:item) { Item.new }
 
   it 'must be valid' do
-    value(item).must_be :valid?
+    value(todos(:one).items.first).must_be :valid?
+  end
+
+  it 'must be invalid when no todo' do
+    value(item).wont_be :valid?
   end
 end
