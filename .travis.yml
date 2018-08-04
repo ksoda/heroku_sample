@@ -1,21 +1,19 @@
 language: ruby
-
 services:
 - postgresql
-
 bundler_args: "--without development"
-
 cache: bundler
-
 before_script:
 - psql -U postgres -c 'CREATE DATABASE myapp_test;'
-
 script:
 - bundle exec rubocop
 - export DATABASE_URL=postgres://postgres@localhost/myapp_test
 - env RAILS_ENV=test bin/rails db:migrate
 - bin/rails test
 - bundle exec brakeman
-
 notifications:
   email: false
+  slack:
+    secure: u7sIUA7q11vqxWb/zTgZhe8ta/Gup2rf1+1oIv31VFDGSBf7A3drpHb4U2ZWruMAh1KHIsoj0GBDNkje3wIGb1g3ic1wM6FiHZysus2g95Gxqw1WCrMLl8pMTnj9z4dKYsY11Y7WAmom8OcoljnFt7DK5d5S0Kb1IyUMMO85MKUbGY9hjuKFjYPXKO7OELnpJEc2ZhUTuRZPqc1pOgeUZwTMNDNZLPAwWC0Qlut6ZuJsVf5YLU9loRuDcMjItbsj/WNEUEG8INFVRovmZbh2x8TuuATF71/djZA0vP9wmQrVHxpWZ/IMUybDEirQXjMrDQwPkR675WGR3tdjQ9oJzE1+AsjxeXYTDmA5OvaLIZOdA3MRO/u9ztW8f1AHedHPdaQECphc/zPhMrQjNW322WfzrhGwVyGPFY6AKx41gL5W7A+7TnVnwE5bw5C5QP6UBpYIhE9dkm+Qc03CZDZOBnWBrSANUV/mgrg/Z3F/6hhoS2V/kF1YJhYmUALWCoVY0pG2HU1wGSTvypICs1FAUbed/Q2t61seNsix5noh2GP9WmpG2Thjfp+mVDzMDbsW1/PWc3lUZkjq/h/Gmu9hLtFQ3d8khrSEoGnFMr7BceI8aJKLf7l6mZxGd0f3kq75Cs2eCbeTwXb3uYOhCA/ZJmuyGVtkObDjdfmoH6dkJHw=
+    on_success: change
+    on_failure: always
