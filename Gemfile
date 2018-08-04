@@ -35,6 +35,8 @@ end
 
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'meta_request'
+  gem 'pry-rails'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'rubocop', '~> 0.58.2', require: false
   gem 'web-console', '>= 3.3.0'
