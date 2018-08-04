@@ -8,10 +8,11 @@ bundler_args: "--without development"
 cache: bundler
 
 before_script:
-- psql -U postgres -c 'create database myapp_test;'
+- psql -U postgres -c 'CREATE DATABASE myapp_test;'
 
 script:
 - bundle exec rubocop
+- export DATABASE_URL=postgres://postgres@localhost/myapp_test
 - env RAILS_ENV=test bin/rails db:migrate
 - bin/rails test
 - bundle exec brakeman
