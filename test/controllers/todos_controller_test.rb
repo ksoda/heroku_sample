@@ -13,14 +13,21 @@ describe TodosController do
     end
   end
 
-  it 'returns todos' do
-    size = lambda {
-      get '/todos'
-      json.size
-    }
+  describe 'POST /todos' do
+    it 'creates a todo' do
+      size = lambda {
+        get '/todos'
+        json.size
+      }
 
-    before_size = size.call
-    post '/todos', params: { title: 'title', created_by: 'John' }
-    size.call.wont_be :eql?, before_size
+      before_size = size.call
+      post '/todos', params: { title: 'title', created_by: 'John' }
+      value(size.call).wont_be :eql?, before_size
+    end
+
+    it 'returns status code 422 when the request is invalid' do
+      post '/todos', params: {}
+      value(response).must_be :unprocessable?
+    end
   end
 end
