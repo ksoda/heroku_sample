@@ -8,13 +8,13 @@ bundler_args: "--without development"
 cache: bundler
 
 before_script:
-# - psql -U postgres -c 'create database travis_ci_test;'
-# - cp config/database.yml.travis config/database.yml
+- psql -U postgres -c 'create database myapp_test;'
 
 script:
 - bundle exec rubocop
-# - env RAILS_ENV=test bin/rails db:migrate
-# - bin/rails test
+- env RAILS_ENV=test bin/rails db:migrate
+- bin/rails test
+- bundle exec brakeman
 
 notifications:
   email: false
