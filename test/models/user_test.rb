@@ -3,7 +3,7 @@
 require 'test_helper'
 
 describe User do
-  let(:user) { users(:one) }
+  let(:user) { users(:alice) }
 
   it 'must be valid' do
     value(user).must_be :valid?
