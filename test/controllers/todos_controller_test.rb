@@ -6,6 +6,7 @@ describe TodosController do
   def json
     JSON.parse(response.body)
   end
+
   describe 'GET /todos' do
     it 'returns todos' do
       get '/todos'
@@ -15,14 +16,8 @@ describe TodosController do
 
   describe 'POST /todos' do
     it 'creates a todo' do
-      size = lambda {
-        get '/todos'
-        json.size
-      }
-
-      before_size = size.call
       post '/todos', params: { title: 'title', created_by: 'John' }
-      value(size.call).wont_be :eql?, before_size
+      value(response).must_be :created?
     end
 
     it 'returns status code 422 when the request is invalid' do
@@ -30,6 +25,7 @@ describe TodosController do
       value(response).must_be :unprocessable?
     end
   end
+
   describe 'GET /todos/:id' do
     it 'returns the todo' do
       post '/todos', params: { title: 'title', created_by: 'John' }
@@ -46,6 +42,7 @@ describe TodosController do
       value(response).must_be :not_found?
     end
   end
+
   describe 'DELETE /todos/:id' do
     it 'returns status code 204' do
       delete "/todos/#{Todo.first.id}"
