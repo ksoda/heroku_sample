@@ -45,8 +45,15 @@ describe TodosController do
 
   describe 'DELETE /todos/:id' do
     it 'returns status code 204' do
-      delete "/todos/#{Todo.first.id}"
+      id = Todo.first.id
+      get "/todos/#{id}"
+      value(response).must_be :successful?
+
+      delete "/todos/#{id}"
       value(response).must_be :no_content?
+
+      get "/todos/#{id}"
+      value(response).must_be :not_found?
     end
   end
 end
