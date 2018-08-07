@@ -7,7 +7,7 @@ describe ItemsController do
     JSON.parse(response.body)
   end
   let(:todo_id) do
-    todo = todos(:one)
+    todo = todos(:work)
     todo.id
   end
 

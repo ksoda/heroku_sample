@@ -3,9 +3,9 @@
 irondish:
   name: Iron the dishes
   done: false
-  todo: one
+  todo: work
 
 takesalad:
   name: Take salad out of the oven
   done: false
-  todo: two
+  todo: hobby

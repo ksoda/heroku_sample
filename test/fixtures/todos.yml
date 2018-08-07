@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+work:
   title: Work
   created_by: Alice
 
-two:
+hobby:
   title: Hobby
   created_by: John

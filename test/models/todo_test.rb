@@ -3,7 +3,7 @@
 require 'test_helper'
 
 describe Todo do
-  let(:todo) { todos(:one) }
+  let(:todo) { todos(:work) }
 
   it 'must be valid' do
     value(todo).must_be :valid?
