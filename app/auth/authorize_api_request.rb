@@ -1,15 +1,8 @@
 # frozen_string_literal: true
 
-class AuthorizeApiRequest
-  class Message
-    def self.missing_token
-      'Missing token'
-    end
+require 'message'
 
-    def self.invalid_token
-      'Invalid token'
-    end
-  end
+class AuthorizeApiRequest
   def initialize(headers = {})
     @headers = headers
   end

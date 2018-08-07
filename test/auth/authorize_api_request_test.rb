@@ -20,7 +20,7 @@ describe AuthorizeApiRequest do
     )
   end
 
-  let(:user) { users(:john) }
+  let(:user) { User.first }
 
   describe '#call' do
     it 'returns user object when valid request' do
