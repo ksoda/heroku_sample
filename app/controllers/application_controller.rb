@@ -14,9 +14,17 @@ class ApplicationController < ActionController::Base
     render json: { message: e.message }, status: :not_found
   end
 
+  before_action :authorize_request
+  attr_reader :current_user
+
   private
 
   def handle_invalid(err)
     render json: { message: err.message }, status: :unprocessable_entity
+  end
+
+  def authorize_request
+    req = AuthorizeApiRequest.new(request.headers)
+    @current_user = req.call.fetch(:user)
   end
 end
