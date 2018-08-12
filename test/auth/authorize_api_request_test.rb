@@ -20,7 +20,8 @@ describe AuthorizeApiRequest do
     )
   end
 
-  let(:user) { User.first }
+  # FIXME: load dynamic methods
+  let(:user) { User.find_by!(name: 'John') }
 
   describe '#call' do
     it 'returns user object when valid request' do
