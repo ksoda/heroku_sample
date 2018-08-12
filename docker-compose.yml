@@ -17,7 +17,7 @@ services:
       - "3000:3000"
     depends_on:
       - db
-      # - serve
+      - serve
     environment:
       - WEBPACKER_DEV_SERVER_HOST=serve
     tty: true
