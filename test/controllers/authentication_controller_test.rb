@@ -3,9 +3,7 @@
 require 'test_helper'
 
 describe AuthenticationController do
-  def json
-    JSON.parse(response.body)
-  end
+  include TestSupport
   describe 'POST /auth/login' do
     let(:user) { users(:john) }
 
@@ -15,7 +13,7 @@ describe AuthenticationController do
         params: { email: user.email, password: 'secret' }.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
-      value(json['auth_token']).wont_be :nil?
+      value(parse_json['auth_token']).wont_be :nil?
     end
 
     it 'returns a failure message when request is invalid' do
@@ -24,7 +22,7 @@ describe AuthenticationController do
         params: { email: 'blahblah@example.test', password: 'invalid' }.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
-      value(json['message']).must_match(/Invalid credentials/)
+      value(parse_json['message']).must_match(/Invalid credentials/)
     end
   end
 end

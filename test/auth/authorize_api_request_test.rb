@@ -3,12 +3,9 @@
 require 'test_helper'
 
 describe AuthorizeApiRequest do
+  include TestSupport
   def described_class
     AuthorizeApiRequest
-  end
-
-  def token_generator(user_id)
-    JsonWebToken.encode(user_id: user_id)
   end
 
   def expired_token_generator(user_id)

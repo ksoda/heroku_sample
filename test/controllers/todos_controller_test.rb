@@ -3,14 +3,7 @@
 require 'test_helper'
 
 describe TodosController do
-  def json
-    JSON.parse(response.body)
-  end
-
-  def token_generator(user_id)
-    JsonWebToken.encode(user_id: user_id)
-  end
-
+  include TestSupport
   let(:valid_headers) do
     user = users(:john)
     {
@@ -53,11 +46,11 @@ describe TodosController do
         params: { title: 'title', created_by: 'John' }.to_json,
         headers: valid_headers
       )
-      id = json['id']
+      id = parse_json['id']
 
       get "/todos/#{id}", headers: valid_headers
       value(response).must_be :successful?
-      value(json['id']).must_be :eql?, id
+      value(parse_json['id']).must_be :eql?, id
     end
 
     it 'returns status code 404 when the record does not exist' do

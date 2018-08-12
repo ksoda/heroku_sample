@@ -3,14 +3,7 @@
 require 'test_helper'
 
 describe ItemsController do
-  def json
-    JSON.parse(response.body)
-  end
-
-  def token_generator(user_id)
-    JsonWebToken.encode(user_id: user_id)
-  end
-
+  include TestSupport
   let(:todo_id) do
     todo = todos(:work)
     todo.id
@@ -50,11 +43,11 @@ describe ItemsController do
         params: { name: 'Visit Osorezan', done: false }.to_json,
         headers: valid_headers
       )
-      id = json['id']
+      id = parse_json['id']
 
       get "/todos/#{todo_id}/items/#{id}", headers: valid_headers
       value(response).must_be :successful?
-      value(json['id']).must_be :eql?, id
+      value(parse_json['id']).must_be :eql?, id
     end
   end
 end

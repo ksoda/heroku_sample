@@ -3,12 +3,10 @@
 require 'test_helper'
 
 describe UsersController do
+  include TestSupport
   let(:user) { User.new }
 
   describe 'POST /signup' do
-    def json
-      JSON.parse(response.body)
-    end
     describe 'when valid request' do
       before do
         email = 'test_1@example.test'
@@ -28,9 +26,9 @@ describe UsersController do
 
       it 'creates a new user with an authentication token' do
         value(response).must_be :created?
-        # value(json['message']).must_match(/Account created successfully/)
+        value(parse_json['message']).must_match(/Account created successfully/)
 
-        # value(json['auth_token']).wont_be :nil?
+        value(parse_json['auth_token']).wont_be :nil?
       end
     end
 
@@ -41,7 +39,7 @@ describe UsersController do
         headers: { 'Content-Type' => 'application/json' }
       )
       value(response).must_be :unprocessable?
-      value(json['message']).must_match(
+      value(parse_json['message']).must_match(
         /Validation failed:/
       )
     end
