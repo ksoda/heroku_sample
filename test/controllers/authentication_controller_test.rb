@@ -7,14 +7,12 @@ describe AuthenticationController do
     JSON.parse(response.body)
   end
   describe 'POST /auth/login' do
-    let(:user) do
-      User.first.tap { |u| u.update!(password: 'a') }
-    end
+    let(:user) { User.find_by!(name: 'John') }
 
     it 'returns an authentication token when request is valid' do
       post(
         '/auth/login',
-        params: { email: user.email, password: user.password }.to_json,
+        params: { email: user.email, password: 'secret' }.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
       value(json['auth_token']).wont_be :nil?

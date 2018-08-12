@@ -6,15 +6,13 @@ describe AuthenticateUser do
   def described_class
     AuthenticateUser
   end
-  let(:user) do
-    User.first.tap { |u| u.update!(password: 'a') }
-  end
+  let(:user) { User.find_by!(name: 'John') }
 
   describe '#call' do
     it 'returns an auth token when valid credentials' do
       value(
         described_class.new(
-          user.email, user.password
+          user.email, 'secret'
         ).call
       ).wont_be :nil?
     end
