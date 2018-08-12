@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
     render json: { message: e.message }, status: :not_found
   end
 
+  protect_from_forgery with: :null_session
+
   before_action :authorize_request
   attr_reader :current_user
 
