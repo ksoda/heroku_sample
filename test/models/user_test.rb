@@ -3,7 +3,7 @@
 require 'test_helper'
 
 describe User do
-  let(:user) { User.find_by!(name: 'John') }
+  let(:user) { users(:john) }
 
   it 'must be valid' do
     value(user).must_be :valid?

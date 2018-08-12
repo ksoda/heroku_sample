@@ -7,7 +7,7 @@ describe AuthenticationController do
     JSON.parse(response.body)
   end
   describe 'POST /auth/login' do
-    let(:user) { User.find_by!(name: 'John') }
+    let(:user) { users(:john) }
 
     it 'returns an authentication token when request is valid' do
       post(
