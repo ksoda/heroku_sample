@@ -20,6 +20,8 @@ services:
       # - serve
     environment:
       - WEBPACKER_DEV_SERVER_HOST=serve
+    tty: true
+    stdin_open: true
   serve:
     <<: *app
     command: bin/webpack-dev-server
