@@ -9,4 +9,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.body.appendChild(target)
   Elm.Main.embed(target)
+  console.log('loaded')
 })
