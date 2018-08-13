@@ -5757,6 +5757,10 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
+todomvc-app-css@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/todomvc-app-css/-/todomvc-app-css-2.1.2.tgz#f644c1308ba51b983436497e30f3abe961ca9c62"
+
 tough-cookie@~2.3.0, tough-cookie@~2.3.3:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.3.4.tgz#ec60cee38ac675063ffc97a5c18970578ee83655"
