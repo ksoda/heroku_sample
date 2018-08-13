@@ -1,5 +1,5 @@
 # Getting Started
-[![Build Status](https://travis-ci.org/ksoda/heroku_sample.svg?branch=master)](https://travis-ci.org/ksoda/heroku_sample)
+[![Build Status](https://travis-ci.org/ksoda/todo_app_rails.svg?branch=master)](https://travis-ci.org/ksoda/todo_app_rails)
 
 ```sh
 bin/create-app
