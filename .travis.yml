@@ -2,13 +2,16 @@ language: ruby
 services:
 - postgresql
 bundler_args: "--without development"
-cache: bundler
+cache:
+- bundler
+- yarn
+env:
+- DATABASE_URL=postgres://postgres@localhost/myapp_test
 before_script:
-- psql -U postgres -c 'CREATE DATABASE myapp_test;'
+- bin/rails db:create
+- yarn install
 script:
 - bundle exec rubocop
-- export DATABASE_URL=postgres://postgres@localhost/myapp_test
-- env RAILS_ENV=test bin/rails db:migrate
 - bin/rails test
 - bundle exec brakeman
 notifications:
