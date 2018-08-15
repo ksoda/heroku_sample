@@ -3,7 +3,9 @@ services:
 - postgresql
 bundler_args: "--without development"
 cache:
-- bundler
+  bundler: true
+  directories:
+    - node_modules
 env:
 - DATABASE_URL=postgres://postgres@localhost/myapp_test
 before_script:
