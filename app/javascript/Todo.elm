@@ -49,7 +49,7 @@ update msg model =
 
 todoItem : String -> Html Msg
 todoItem todo =
-    li [] [text todo, button [] [text "x"]]
+    li [] [ text todo, button [] [ text "x" ] ]
 
 
 todoList : List String -> Html Msg
@@ -59,6 +59,7 @@ todoList todos =
             List.map todoItem todos
     in
         ul [] child
+
 
 view : Model -> Html Msg
 view model =
