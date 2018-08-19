@@ -32,6 +32,7 @@ type Msg
     = UpdateTodo String
     | AddTodo
     | RemoveAll
+    | RemoveItem String
 
 
 update : Msg -> Model -> Model
@@ -46,10 +47,16 @@ update msg model =
         RemoveAll ->
             { model | todos = [] }
 
+        RemoveItem text ->
+            { model | todos = List.filter (\x -> x /= text) model.todos }
+
 
 todoItem : String -> Html Msg
 todoItem todo =
-    li [] [ text todo, button [] [ text "x" ] ]
+    li []
+        [ text todo
+        , button [ onClick (RemoveItem todo) ] [ text "x" ]
+        ]
 
 
 todoList : List String -> Html Msg
