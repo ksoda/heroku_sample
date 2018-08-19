@@ -42,7 +42,10 @@ update msg model =
             { model | todo = text }
 
         AddTodo ->
-            { model | todos = model.todo :: model.todos }
+            { model
+                | todos = model.todo :: model.todos
+                , todo = ""
+            }
 
         RemoveAll ->
             { model | todos = [] }
