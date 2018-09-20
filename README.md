@@ -1,5 +1,6 @@
 # Getting Started
-[![Build Status](https://travis-ci.org/ksoda/todo_app_rails.svg?branch=master)](https://travis-ci.org/ksoda/todo_app_rails)
+
+[![Build Status](https://travis-ci.org/ksoda/todo-app.svg?branch=master)](https://travis-ci.org/ksoda/todo-app)
 
 ```sh
 bin/create-app
