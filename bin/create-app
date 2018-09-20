@@ -1,9 +1,11 @@
-#!/bin/bash
-set -eu
+#!/bin/bash -eu
+# set -x
 
 pip3 install haikunator
 name=$(python3 -c "from haikunator import Haikunator; print(Haikunator().haikunate())")
 echo "name: $name"
+
+docker-compose run --rm deploy init
+# docker-compose run --rm deploy plan -var name=$name
+docker-compose run --rm deploy apply -var name=$name
 heroku git:remote -a $name
-docker-compose run deploy init
-docker-compose run deploy plan

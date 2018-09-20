@@ -35,3 +35,4 @@ yarn-debug.log*
 .terraform/
 *.tfstate
 *.tfstate.backup
+terraform.tfvars
