@@ -5,5 +5,11 @@
 bin/create-app
 git push heroku master
 ```
-## Note
-https://scotch.io/tutorials/build-a-restful-json-api-with-rails-5-part-one
+
+## Test
+
+```sh
+docker-compose run --rm web yarn install
+docker-compose run --rm -e RAILS_ENV=test web bin/rails db:setup
+docker-compose run --rm -e RAILS_ENV=test web bin/rails test
+```
