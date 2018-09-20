@@ -10,9 +10,7 @@ describe ItemsController do
   end
 
   let(:valid_headers) do
-    user = users(:john)
     {
-      'Authorization' => token_generator(user.id),
       'Content-Type' => 'application/json'
     }
   end

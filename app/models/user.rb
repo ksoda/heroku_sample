@@ -9,5 +9,4 @@ class User < ApplicationRecord
            inverse_of: 'user'
 
   validates :name, :email, :password_digest, presence: true
-  validates :name, :email, :password_digest, presence: true
 end

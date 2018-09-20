@@ -13,10 +13,6 @@ class ActiveSupport::TestCase
 end
 
 module TestSupport
-  def token_generator(user_id)
-    JsonWebToken.encode(user_id: user_id)
-  end
-
   def parse_json
     JSON.parse(response.body)
   end
