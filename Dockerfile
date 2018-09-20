@@ -2,8 +2,7 @@ FROM node:8 as node
 FROM ruby:2.5
 
 RUN apt-get update -qq && apt-get install -y build-essential
-ENV YARN_VERSION 1.6.0
-COPY --from=node /opt/yarn-v$YARN_VERSION /opt/yarn
+COPY --from=node /opt/yarn-v* /opt/yarn
 COPY --from=node /usr/local/bin/node /usr/local/bin/
 RUN ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn \
     && ln -s /opt/yarn/bin/yarnpkg /usr/local/bin/yarnpkg
