@@ -1,10 +1,10 @@
 module Main exposing (main)
 
+import Debug exposing (crash)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Html.Lazy exposing (lazy, lazy2)
-import Debug exposing (crash)
 
 
 main =
@@ -68,7 +68,7 @@ todoList todos =
         child =
             List.map todoItem todos
     in
-        ul [] child
+    ul [] child
 
 
 view : Model -> Html Msg
