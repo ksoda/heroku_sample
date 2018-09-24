@@ -1,72 +1,86 @@
-module Main exposing (..)
+module Main exposing (main)
 
-import Html exposing (Html, h1, text)
-import Html.Attributes exposing (style)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (..)
+import Html.Lazy exposing (lazy, lazy2)
+import Debug exposing (crash)
 
 
--- MODEL
+main =
+    beginnerProgram
+        { model = model
+        , update = update
+        , view = view
+        }
 
 
 type alias Model =
-    {}
+    { todo : String
+    , todos : List String
+    }
 
 
-
--- INIT
-
-
-init : ( Model, Cmd Message )
-init =
-    ( Model, Cmd.none )
+model : Model
+model =
+    { todo = ""
+    , todos = []
+    }
 
 
+type Msg
+    = UpdateTodo String
+    | AddTodo
+    | RemoveAll
+    | RemoveItem String
 
--- VIEW
+
+update : Msg -> Model -> Model
+update msg model =
+    case msg of
+        UpdateTodo text ->
+            { model | todo = text }
+
+        AddTodo ->
+            { model
+                | todos = model.todo :: model.todos
+                , todo = ""
+            }
+
+        RemoveAll ->
+            { model | todos = [] }
+
+        RemoveItem text ->
+            { model | todos = List.filter (\x -> x /= text) model.todos }
 
 
-view : Model -> Html Message
+todoItem : String -> Html Msg
+todoItem todo =
+    li []
+        [ text todo
+        , button [ onClick (RemoveItem todo) ] [ text "x" ]
+        ]
+
+
+todoList : List String -> Html Msg
+todoList todos =
+    let
+        child =
+            List.map todoItem todos
+    in
+        ul [] child
+
+
+view : Model -> Html Msg
 view model =
-    -- The inline style is being used for example purposes in order to keep this example simple and
-    -- avoid loading additional resources. Use a proper stylesheet when building your own app.
-    h1 [ style [ ( "display", "flex" ), ( "justify-content", "center" ) ] ]
-        [ text "Hello Elm!" ]
-
-
-
--- MESSAGE
-
-
-type Message
-    = None
-
-
-
--- UPDATE
-
-
-update : Message -> Model -> ( Model, Cmd Message )
-update message model =
-    ( model, Cmd.none )
-
-
-
--- SUBSCRIPTIONS
-
-
-subscriptions : Model -> Sub Message
-subscriptions model =
-    Sub.none
-
-
-
--- MAIN
-
-
-main : Program Never Model Message
-main =
-    Html.program
-        { init = init
-        , view = view
-        , update = update
-        , subscriptions = subscriptions
-        }
+    div []
+        [ input
+            [ type_ "text"
+            , onInput UpdateTodo
+            , value model.todo
+            ]
+            []
+        , button [ onClick AddTodo ] [ text "Submit" ]
+        , button [ onClick RemoveAll ] [ text "Remove All" ]
+        , div [] [ todoList model.todos ]
+        ]
