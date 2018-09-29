@@ -1,86 +1,63 @@
 module Main exposing (main)
 
-import Debug exposing (crash)
+import Browser
 import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
-import Html.Lazy exposing (lazy, lazy2)
 
 
 main =
-    beginnerProgram
-        { model = model
+    Browser.sandbox
+        { init = init
         , update = update
         , view = view
         }
 
 
+
+-- MODEL
+
+
+type alias Todo =
+    String
+
+
 type alias Model =
-    { todo : String
-    , todos : List String
+    { todos : List Todo
     }
 
 
-model : Model
-model =
-    { todo = ""
-    , todos = []
+init =
+    { todos =
+        [ "Task1"
+        , "Task2"
+        ]
     }
+
+
+
+-- UPDATE
 
 
 type Msg
-    = UpdateTodo String
-    | AddTodo
-    | RemoveAll
-    | RemoveItem String
+    = NoOp
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        UpdateTodo text ->
-            { model | todo = text }
-
-        AddTodo ->
-            { model
-                | todos = model.todo :: model.todos
-                , todo = ""
-            }
-
-        RemoveAll ->
-            { model | todos = [] }
-
-        RemoveItem text ->
-            { model | todos = List.filter (\x -> x /= text) model.todos }
+        NoOp ->
+            model
 
 
-todoItem : String -> Html Msg
-todoItem todo =
-    li []
-        [ text todo
-        , button [ onClick (RemoveItem todo) ] [ text "x" ]
-        ]
 
-
-todoList : List String -> Html Msg
-todoList todos =
-    let
-        child =
-            List.map todoItem todos
-    in
-    ul [] child
+-- VIEW
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ input
-            [ type_ "text"
-            , onInput UpdateTodo
-            , value model.todo
-            ]
-            []
-        , button [ onClick AddTodo ] [ text "Submit" ]
-        , button [ onClick RemoveAll ] [ text "Remove All" ]
-        , div [] [ todoList model.todos ]
-        ]
+        (model.todos
+            |> List.map
+                (\x ->
+                    li [] [ text x ]
+                )
+        )
