@@ -8,7 +8,7 @@
     "todomvc-app-css": "^2.1.2"
   },
   "devDependencies": {
-    "elm-format": "^0.6.1-alpha",
+    "elm-format": "^0.8.0",
     "elm-hot-loader": "^0.5.4",
     "webpack-dev-server": "2.11.2"
   }
