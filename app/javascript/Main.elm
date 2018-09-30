@@ -41,7 +41,7 @@ init _ =
 
 type Msg
     = NoOp
-    | FetchAll (Result Http.Error (List Todo))
+    | FetchedAll (Result Http.Error (List Todo))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -50,7 +50,7 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        FetchAll result ->
+        FetchedAll result ->
             case result of
                 Ok todos ->
                     ( { model | todos = todos }, Cmd.none )
@@ -80,7 +80,7 @@ view model =
 
 fetchTodos : Cmd Msg
 fetchTodos =
-    Http.send FetchAll <|
+    Http.send FetchedAll <|
         Http.get "http://localhost:3000/todos" <|
             Decode.list todoDecoder
 
