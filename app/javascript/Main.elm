@@ -5,10 +5,11 @@ import Html exposing (..)
 
 
 main =
-    Browser.sandbox
+    Browser.element
         { init = init
         , update = update
         , view = view
+        , subscriptions = \_ -> Sub.none
         }
 
 
@@ -25,12 +26,14 @@ type alias Model =
     }
 
 
-init =
-    { todos =
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( Model
         [ "Task1"
         , "Task2"
         ]
-    }
+    , Cmd.none
+    )
 
 
 
@@ -41,11 +44,11 @@ type Msg
     = NoOp
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         NoOp ->
-            model
+            ( model, Cmd.none )
 
 
 
