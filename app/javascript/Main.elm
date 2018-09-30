@@ -64,14 +64,19 @@ update msg model =
 
 
 view : Model -> Html Msg
-view model =
+view { todos } =
     div []
-        (model.todos
-            |> List.map
-                (\x ->
-                    li [] [ text x ]
-                )
-        )
+        [ todosView todos ]
+
+
+todosView : List Todo -> Html Msg
+todosView todos =
+    ul [] (List.map todoView todos)
+
+
+todoView : Todo -> Html Msg
+todoView title =
+    li [] [ text title ]
 
 
 
