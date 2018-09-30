@@ -1,9 +1,13 @@
 module Main exposing (main)
 
 import Browser
+import Debug exposing (log, toString)
 import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (..)
 import Http
 import Json.Decode as Decode
+import Json.Encode as Encode
 
 
 main =
@@ -20,17 +24,18 @@ main =
 
 
 type alias Todo =
-    String
+    { id : Int, title : String }
 
 
 type alias Model =
     { todos : List Todo
+    , field : String
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model []
+    ( Model [] ""
     , fetchTodos
     )
 
@@ -42,6 +47,9 @@ init _ =
 type Msg
     = NoOp
     | FetchedAll (Result Http.Error (List Todo))
+    | Created (Result Http.Error Todo)
+    | Add
+    | UpdateField String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -58,15 +66,38 @@ update msg model =
                 Err _ ->
                     ( model, Cmd.none )
 
+        Created result ->
+            case result of
+                Ok t ->
+                    ( { model | todos = model.todos ++ [ t ], field = "" }, Cmd.none )
+
+                Err _ ->
+                    ( model, Cmd.none )
+
+        Add ->
+            ( model, add model.field (nextId model.todos) )
+
+        UpdateField str ->
+            ( { model | field = str }
+            , Cmd.none
+            )
+
 
 
 -- VIEW
 
 
 view : Model -> Html Msg
-view { todos } =
+view { todos, field } =
     div []
-        [ todosView todos ]
+        [ input
+            [ value field
+            , onInput UpdateField
+            ]
+            []
+        , button [ onClick Add ] [ text "+" ]
+        , todosView todos
+        ]
 
 
 todosView : List Todo -> Html Msg
@@ -75,7 +106,7 @@ todosView todos =
 
 
 todoView : Todo -> Html Msg
-todoView title =
+todoView { title } =
     li [] [ text title ]
 
 
@@ -83,13 +114,47 @@ todoView title =
 -- HTTP
 
 
+resourceUrl : String
+resourceUrl =
+    "http://localhost:3000/todos"
+
+
 fetchTodos : Cmd Msg
 fetchTodos =
     Http.send FetchedAll <|
-        Http.get "http://localhost:3000/todos" <|
+        Http.get resourceUrl <|
             Decode.list todoDecoder
+
+
+add : String -> Int -> Cmd Msg
+add title id =
+    let
+        json =
+            Encode.object
+                [ ( "id", Encode.int id )
+                , ( "title", Encode.string title )
+                ]
+
+        body =
+            Http.stringBody "application/json" (Encode.encode 0 json)
+    in
+    Http.send Created <|
+        Http.post resourceUrl body todoDecoder
 
 
 todoDecoder : Decode.Decoder Todo
 todoDecoder =
-    Decode.field "title" Decode.string
+    Decode.map2 Todo
+        (Decode.field "id" Decode.int)
+        (Decode.field "title" Decode.string)
+
+
+nextId : List Todo -> Int
+nextId todos =
+    let
+        max =
+            todos
+                |> List.map .id
+                |> List.maximum
+    in
+    Maybe.withDefault 1 max + 1
