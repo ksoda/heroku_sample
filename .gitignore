@@ -27,6 +27,8 @@
 /config/master.key
 
 elm-stuff
+public/index.html
+
 /node_modules
 /yarn-error.log
 
