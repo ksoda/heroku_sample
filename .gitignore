@@ -7,6 +7,10 @@
 # Ignore bundler config.
 /.bundle
 
+# Ignore the default SQLite database.
+/db/*.sqlite3
+/db/*.sqlite3-journal
+
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
@@ -15,22 +19,21 @@
 
 # Ignore uploaded files in development
 /storage/*
+!/storage/.keep
+
+.byebug_history
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
 
 elm-stuff
 /node_modules
 /yarn-error.log
 
-/app/javascript/db.json
+/db/db.json
 
-/public/assets
 .byebug_history
-
-# Ignore master key for decrypting credentials and more.
-/config/master.key
-/public/packs
-/public/packs-test
 yarn-debug.log*
-.yarn-integrity
 
 .terraform/
 *.tfstate

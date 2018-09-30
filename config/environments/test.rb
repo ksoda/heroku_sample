@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -32,6 +30,13 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system in a temporary directory
   config.active_storage.service = :test
+
+  config.action_mailer.perform_caching = false
+
+  # Tell Action Mailer not to deliver emails to the real world.
+  # The :test delivery method accumulates sent emails in the
+  # ActionMailer::Base.deliveries array.
+  config.action_mailer.delivery_method = :test
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr

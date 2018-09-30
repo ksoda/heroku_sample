@@ -1,22 +1,24 @@
-# Getting Started
+# README
 
-[![Build Status](https://travis-ci.org/ksoda/todo-app.svg?branch=master)](https://travis-ci.org/ksoda/todo-app)
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-```sh
-bin/create-app
-git push heroku master
-```
+Things you may want to cover:
 
-## Test
+* Ruby version
 
-```sh
-docker-compose run --rm web yarn install
-docker-compose run --rm -e RAILS_ENV=test web bin/rails db:setup
-docker-compose run --rm -e RAILS_ENV=test web bin/rails test
-```
+* System dependencies
 
-## Local
+* Configuration
 
-```sh
-docker-compose up web
-```
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...
