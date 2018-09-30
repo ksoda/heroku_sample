@@ -20,6 +20,8 @@ elm-stuff
 /node_modules
 /yarn-error.log
 
+/app/javascript/db.json
+
 /public/assets
 .byebug_history
 
