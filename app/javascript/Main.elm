@@ -3,6 +3,7 @@ module Main exposing (main)
 import Browser
 import Html exposing (..)
 import Http
+import Json.Decode as Decode
 
 
 main =
@@ -40,7 +41,7 @@ init _ =
 
 type Msg
     = NoOp
-    | FetchAll (Result Http.Error String)
+    | FetchAll (Result Http.Error (List Todo))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -51,8 +52,8 @@ update msg model =
 
         FetchAll result ->
             case result of
-                Ok dummy ->
-                    ( { model | todos = [ dummy ] }, Cmd.none )
+                Ok todos ->
+                    ( { model | todos = todos }, Cmd.none )
 
                 Err _ ->
                     ( model, Cmd.none )
@@ -80,4 +81,10 @@ view model =
 fetchTodos : Cmd Msg
 fetchTodos =
     Http.send FetchAll <|
-        Http.getString "http://localhost:3000/todos"
+        Http.get "http://localhost:3000/todos" <|
+            Decode.list todoDecoder
+
+
+todoDecoder : Decode.Decoder Todo
+todoDecoder =
+    Decode.field "title" Decode.string
