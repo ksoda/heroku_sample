@@ -2,6 +2,7 @@ module Main exposing (main)
 
 import Browser
 import Html exposing (..)
+import Http
 
 
 main =
@@ -28,11 +29,8 @@ type alias Model =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model
-        [ "Task1"
-        , "Task2"
-        ]
-    , Cmd.none
+    ( Model []
+    , fetchTodos
     )
 
 
@@ -42,6 +40,7 @@ init _ =
 
 type Msg
     = NoOp
+    | FetchAll (Result Http.Error String)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -49,6 +48,14 @@ update msg model =
     case msg of
         NoOp ->
             ( model, Cmd.none )
+
+        FetchAll result ->
+            case result of
+                Ok dummy ->
+                    ( { model | todos = [ dummy ] }, Cmd.none )
+
+                Err _ ->
+                    ( model, Cmd.none )
 
 
 
@@ -64,3 +71,13 @@ view model =
                     li [] [ text x ]
                 )
         )
+
+
+
+-- HTTP
+
+
+fetchTodos : Cmd Msg
+fetchTodos =
+    Http.send FetchAll <|
+        Http.getString "http://localhost:3000/todos"
