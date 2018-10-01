@@ -7,6 +7,9 @@ AllCops:
 Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
+Style/MixinUsage:
+  Exclude:
+    - 'bin/*'
 Rails:
   Enabled: true
 Metrics/LineLength:
