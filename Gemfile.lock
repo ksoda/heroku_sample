@@ -85,6 +85,7 @@ GEM
     parallel (1.12.1)
     parser (2.5.1.2)
       ast (~> 2.4.0)
+    pg (1.1.3)
     powerpack (0.1.2)
     puma (3.12.0)
     rack (2.0.5)
@@ -161,6 +162,7 @@ DEPENDENCIES
   byebug
   listen (>= 3.0.5, < 3.2)
   minitest-rails
+  pg
   puma (~> 3.11)
   rails (~> 5.2.1)
   rubocop (~> 0.59.2)
@@ -173,4 +175,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.3
+   1.16.4
