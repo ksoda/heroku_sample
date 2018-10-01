@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'pathname'
 task :env do
   @path = 'client'

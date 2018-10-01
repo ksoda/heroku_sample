@@ -26,7 +26,8 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-/public/index.html
+/public/*
+!/public/index.html
 
 /client/node_modules
 /client/elm-stuff

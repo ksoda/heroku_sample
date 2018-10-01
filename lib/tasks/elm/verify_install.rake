@@ -1,20 +1,22 @@
+# frozen_string_literal: true
+
 namespace :elm do
   desc 'Verifies if Elm is installed'
-  task :verify_install => :env do
+  task verify_install: :env do
     begin
-      node_version = `node -v`
+      _node_version = `node -v`
     rescue Errno::ENOENT
-      $stderr.puts 'Node.js not installed' && exit!
+      warn 'Node.js not installed' && exit!
     end
 
     begin
-      yarn_version = `yarn --version`
+      _yarn_version = `yarn --version`
     rescue Errno::ENOENT
-      $stderr.puts 'Yarn not installed' && exit!
+      warn 'Yarn not installed' && exit!
     end
     Dir.chdir(@path) do
-      elm_version = "$(yarn bin)/elm --version"
+      _elm_version = '$(yarn bin)/elm --version'
     end
-    puts "Installation verified"
+    puts 'Installation verified'
   end
 end
