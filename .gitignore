@@ -28,6 +28,7 @@
 
 /public/*
 !/public/index.html
+!/public/favicon.ico
 
 /node_modules
 /client/elm-stuff
