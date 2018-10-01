@@ -89,25 +89,38 @@ update msg model =
 
 view : Model -> Html Msg
 view { todos, field } =
-    div []
-        [ input
-            [ value field
-            , onInput UpdateField
+    section [ class "todoapp" ]
+        [ header [ class "header" ]
+            [ input
+                [ value field
+                , onInput UpdateField
+                , autofocus True
+                ]
+                []
+            , button
+                [ onClick Add
+                , style "padding" "3px .5em"
+                , style "background-color" "lightgray"
+                ]
+                [ text "+" ]
             ]
-            []
-        , button [ onClick Add ] [ text "+" ]
-        , todosView todos
+        , section [ class "main" ]
+            [ todosView todos
+            ]
         ]
 
 
 todosView : List Todo -> Html Msg
 todosView todos =
-    ul [] (List.map todoView todos)
+    ul [ class "todo-list" ] (List.map todoView todos)
 
 
 todoView : Todo -> Html Msg
 todoView { title } =
-    li [] [ text title ]
+    li []
+        [ div [ class "view" ]
+            [ label [] [ text title ] ]
+        ]
 
 
 
