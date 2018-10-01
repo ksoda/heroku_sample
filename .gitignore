@@ -26,16 +26,16 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-elm-stuff
-public/index.html
+/public/index.html
 
-/node_modules
-/yarn-error.log
+/client/node_modules
+/client/elm-stuff
+yarn-error.log
+yarn-debug.log*
 
-/db/db.json
+/client/db.json
 
 .byebug_history
-yarn-debug.log*
 
 .terraform/
 *.tfstate
