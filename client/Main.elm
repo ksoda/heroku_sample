@@ -30,12 +30,13 @@ type alias Todo =
 type alias Model =
     { todos : List Todo
     , field : String
+    , origin : Maybe String
     }
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( Model [] ""
+init : Maybe String -> ( Model, Cmd Msg )
+init origin =
+    ( Model [] "" origin
     , fetchTodos
     )
 
