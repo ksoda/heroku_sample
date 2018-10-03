@@ -32,6 +32,7 @@
 
 /node_modules
 /client/elm-stuff
+/client/elm.js
 yarn-error.log
 yarn-debug.log*
 
