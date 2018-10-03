@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ksoda/todo-app.svg?branch=master)](https://travis-ci.org/ksoda/todo-app)
+
 ## Deploy
 
 ```sh
