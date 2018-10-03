@@ -8,6 +8,7 @@ import Html.Events exposing (..)
 import Http
 import Json.Decode as Decode
 import Json.Encode as Encode
+import Url.Builder as Builder exposing (QueryParameter)
 
 
 main =
@@ -37,7 +38,7 @@ type alias Model =
 init : Maybe String -> ( Model, Cmd Msg )
 init origin =
     ( Model [] "" origin
-    , fetchTodos
+    , fetchTodos origin
     )
 
 
@@ -76,7 +77,7 @@ update msg model =
                     ( model, Cmd.none )
 
         Add ->
-            ( model, add model.field (nextId model.todos) )
+            ( model, add model )
 
         UpdateField str ->
             ( { model | field = str }
@@ -128,32 +129,37 @@ todoView { title } =
 -- HTTP
 
 
-resourceUrl : String
-resourceUrl =
-    "http://localhost:3000/todos"
+resourceUrl : Maybe String -> (List String -> List QueryParameter -> String)
+resourceUrl origin =
+    case origin of
+        Just o ->
+            Builder.crossOrigin o
+
+        Nothing ->
+            Builder.absolute
 
 
-fetchTodos : Cmd Msg
-fetchTodos =
+fetchTodos : Maybe String -> Cmd Msg
+fetchTodos origin =
     Http.send FetchedAll <|
-        Http.get resourceUrl <|
+        Http.get (resourceUrl origin [ "todos" ] []) <|
             Decode.list todoDecoder
 
 
-add : String -> Int -> Cmd Msg
-add title id =
+add : Model -> Cmd Msg
+add { field, origin, todos } =
     let
         json =
             Encode.object
-                [ ( "id", Encode.int id )
-                , ( "title", Encode.string title )
+                [ ( "id", Encode.int (nextId todos) )
+                , ( "title", Encode.string field )
                 ]
 
         body =
             Http.stringBody "application/json" (Encode.encode 0 json)
     in
     Http.send Created <|
-        Http.post resourceUrl body todoDecoder
+        Http.post (resourceUrl origin [ "todos" ] []) body todoDecoder
 
 
 todoDecoder : Decode.Decoder Todo
