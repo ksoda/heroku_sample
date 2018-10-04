@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :todos do
     resources :items
   end
+  resource :authentication, only: %i[create destroy]
 end

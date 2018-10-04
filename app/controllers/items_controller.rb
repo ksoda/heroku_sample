@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ItemsController < ApplicationController
+  # before_action :require_login, except: [:index]
   def index
     items = find_todo.items
     render json: items, status: :ok
