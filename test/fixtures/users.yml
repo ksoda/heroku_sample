@@ -4,8 +4,10 @@ alice:
   name: Alice
   email: alice@example.test
   password_digest: MyString
+  token:
 
 john:
   name: John
   email: john@example.test
   password_digest: <%= BCrypt::Password.create('secret', cost: 1) %>
+  token:

@@ -10,12 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_06_144212) do
+ActiveRecord::Schema.define(version: 2018_10_04_133846) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "items", force: :cascade do |t|
     t.string "name", null: false
     t.boolean "done"
-    t.integer "todo_id"
+    t.bigint "todo_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["todo_id"], name: "index_items_on_todo_id"
@@ -32,8 +35,11 @@ ActiveRecord::Schema.define(version: 2018_08_06_144212) do
     t.string "name", null: false
     t.string "email", null: false
     t.string "password_digest", null: false
+    t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_users_on_token", unique: true
   end
 
+  add_foreign_key "items", "todos"
 end
