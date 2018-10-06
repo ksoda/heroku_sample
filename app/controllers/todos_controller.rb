@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TodosController < ApplicationController
-  # before_action :require_login, except: [:index]
+  before_action :require_login, except: [:index]
   def index
     todos = Todo.take(3)
     render json: todos, status: :ok

@@ -16,4 +16,12 @@ module TestSupport
   def parse_json
     JSON.parse(response.body)
   end
+
+  def authentication_params(user)
+    pass = { 'John' => 'secret' }
+    {
+      email: user.email,
+      password: pass.fetch(user.name)
+    }
+  end
 end

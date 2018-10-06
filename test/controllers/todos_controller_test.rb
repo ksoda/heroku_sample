@@ -5,8 +5,13 @@ require 'test_helper'
 describe TodosController do
   include TestSupport
   let(:valid_headers) do
+    user = User.find_by!(name: 'John')
+    post authentication_url, params: authentication_params(user)
     {
-      'Content-Type' => 'application/json'
+      'Content-Type' => 'application/json',
+      'Authorization' => [
+        'Token token', parse_json['token']
+      ].join('=')
     }
   end
 

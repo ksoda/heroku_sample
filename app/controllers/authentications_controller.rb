@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class AuthenticationsController < ApplicationController
+  before_action :require_login, except: [:create]
   def create
     user = User.find_logined(params[:email], params[:password])
     if user
