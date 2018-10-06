@@ -34,6 +34,7 @@ group :development, :test do
   gem 'brakeman'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'minitest-rails'
+  gem 'pry-rails'
   gem 'rubocop', '~> 0.59.2', require: false
 end
 
