@@ -5,8 +5,8 @@ import Debug exposing (log, toString)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Http
-import Json.Decode as Decode
+import Http exposing (Body)
+import Json.Decode as Decode exposing (Decoder)
 import Json.Encode as Encode
 import Url.Builder as Builder exposing (QueryParameter)
 
@@ -28,16 +28,33 @@ type alias Todo =
     { id : Int, title : String }
 
 
+type alias Form =
+    { email : String
+    , password : String
+    }
+
+
+type FormField
+    = Email
+    | Password
+
+
+type alias Token =
+    String
+
+
 type alias Model =
     { todos : List Todo
     , field : String
+    , token : Maybe Token
+    , form : Form
     , origin : Maybe String
     }
 
 
 init : Maybe String -> ( Model, Cmd Msg )
 init origin =
-    ( Model [] "" origin
+    ( Model [] "" Nothing { email = "", password = "" } origin
     , fetchTodos origin
     )
 
@@ -52,6 +69,10 @@ type Msg
     | Created (Result Http.Error Todo)
     | Add
     | UpdateField String
+    | UpdateEmailForm String
+    | UpdatePasswordForm String
+    | SignedIn (Result Http.Error Token)
+    | SubmittedForm
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -84,31 +105,105 @@ update msg model =
             , Cmd.none
             )
 
+        UpdateEmailForm val ->
+            ( { model
+                | form =
+                    { email = val
+                    , password = model.form.password
+                    }
+              }
+            , Cmd.none
+            )
+
+        UpdatePasswordForm val ->
+            ( { model
+                | form =
+                    { password = val
+                    , email = model.form.email
+                    }
+              }
+            , Cmd.none
+            )
+
+        SignedIn result ->
+            case result of
+                Ok val ->
+                    ( { model
+                        | token = Just val
+                        , form = Form "" ""
+                      }
+                    , Cmd.none
+                    )
+
+                Err _ ->
+                    ( model, Cmd.none )
+
+        SubmittedForm ->
+            ( model
+            , signIn model
+            )
+
 
 
 -- VIEW
 
 
 view : Model -> Html Msg
-view { todos, field } =
-    section [ class "todoapp" ]
-        [ header [ class "header" ]
-            [ input
-                [ value field
-                , onInput UpdateField
-                , autofocus True
+view model =
+    div []
+        [ section [ class "todoapp" ]
+            [ header [ class "header" ]
+                [ input
+                    [ value model.field
+                    , onInput UpdateField
+                    , autofocus True
+                    ]
+                    []
+                , button
+                    [ onClick Add
+                    , style "padding" "3px .5em"
+                    , style "background-color" "lightgray"
+                    ]
+                    [ text "+" ]
+                ]
+            , section [ class "main" ]
+                [ todosView model.todos
+                ]
+            ]
+        , case model.token of
+            Just _ ->
+                text ""
+
+            Nothing ->
+                signInFormView model.form
+        ]
+
+
+signInFormView form =
+    Html.form [ onSubmit SubmittedForm ]
+        [ label []
+            [ text "Email"
+            , input
+                [ type_ "text"
+                , onInput UpdateEmailForm
+                , value form.email
+                , attribute "autocomplete" "email"
                 ]
                 []
-            , button
-                [ onClick Add
-                , style "padding" "3px .5em"
-                , style "background-color" "lightgray"
+            ]
+        , label []
+            [ text "Password"
+            , input
+                [ type_ "password"
+                , onInput UpdatePasswordForm
+                , value form.password
+                , autocomplete True
                 ]
-                [ text "+" ]
+                []
             ]
-        , section [ class "main" ]
-            [ todosView todos
-            ]
+        , button
+            [ style "background-color" "lightgray" ]
+            [ text "Sign in" ]
         ]
 
 
@@ -147,7 +242,7 @@ fetchTodos origin =
 
 
 add : Model -> Cmd Msg
-add { field, origin, todos } =
+add { field, origin, todos, token } =
     let
         json =
             Encode.object
@@ -157,9 +252,28 @@ add { field, origin, todos } =
 
         body =
             Http.stringBody "application/json" (Encode.encode 0 json)
+
+        req =
+            post (resourceUrl origin [ "todos" ] []) token body todoDecoder
     in
-    Http.send Created <|
-        Http.post (resourceUrl origin [ "todos" ] []) body todoDecoder
+    Http.send Created req
+
+
+signIn : Model -> Cmd Msg
+signIn { origin, form } =
+    let
+        body =
+            Encode.object
+                [ ( "email", Encode.string form.email )
+                , ( "password", Encode.string form.password )
+                ]
+                |> Http.jsonBody
+    in
+    Http.send SignedIn <|
+        Http.post
+            (resourceUrl origin [ "authentication" ] [])
+            body
+            (Decode.field "token" Decode.string)
 
 
 todoDecoder : Decode.Decoder Todo
@@ -178,3 +292,22 @@ nextId todos =
                 |> List.maximum
     in
     Maybe.withDefault 0 max + 1
+
+
+post : String -> Maybe Token -> Body -> Decoder a -> Http.Request a
+post url token body decoder =
+    Http.request
+        { method = "POST"
+        , url = url
+        , expect = Http.expectJson decoder
+        , headers =
+            case token of
+                Just t ->
+                    [ Http.header "Authorization" ("Token token=" ++ t) ]
+
+                Nothing ->
+                    []
+        , body = body
+        , timeout = Nothing
+        , withCredentials = False
+        }
