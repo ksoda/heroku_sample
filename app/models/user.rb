@@ -10,6 +10,7 @@ class User < ApplicationRecord
            inverse_of: :owner
 
   validates :name, :email, :password_digest, presence: true
+  validates :email, uniqueness: true
 
   def invalidate_token
     self.token = nil

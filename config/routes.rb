@@ -6,4 +6,5 @@ Rails.application.routes.draw do
     resources :items
   end
   resource :authentication, only: %i[create destroy]
+  resources :users, only: %i[create show]
 end

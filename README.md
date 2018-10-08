@@ -17,9 +17,10 @@ Assume: `host=example.test`
 ```sh
 # Load DB
 docker-compose run --rm web bin/rails db:fixtures:load
+
 # Create User
-docker-compose run --rm web bin/rails r \
-  'User.create!(name: "Ken", email: "ken@example.test", password_digest: BCrypt::Password.create("secret", cost: 1))'
+http post :3000/users email=john@example.test password=secret name=foo
+
 # Get Token
 t=$(http post $host/authentication email=john@example.test password=secret | jq -r .token)
 

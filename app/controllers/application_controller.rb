@@ -4,6 +4,7 @@ class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
   rescue_from ActiveRecord::RecordInvalid, with: :handle_invalid
+  rescue_from ActiveRecord::RecordNotUnique, with: :handle_invalid
   rescue_from ActiveRecord::RecordNotFound do |e|
     render json: { message: e.message }, status: :not_found
   end
