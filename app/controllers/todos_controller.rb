@@ -8,7 +8,9 @@ class TodosController < ApplicationController
   end
 
   def create
-    todo = Todo.create!(todo_params.merge(created_by: 'john'))
+    todo = Todo.new(todo_params)
+    todo.owner = current_user
+    todo.save!
     render json: todo, status: :created
   end
 
@@ -26,7 +28,7 @@ class TodosController < ApplicationController
   private
 
   def todo_params
-    params.permit(:title, :created_by)
+    params.permit(:title)
   end
 
   def find_todo

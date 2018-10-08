@@ -5,9 +5,9 @@ class User < ApplicationRecord
   has_secure_token
 
   has_many :todos,
-           foreign_key: 'created_by',
-           dependent: :nullify,
-           inverse_of: 'user'
+           dependent: :destroy,
+           foreign_key: 'user_id',
+           inverse_of: :owner
 
   validates :name, :email, :password_digest, presence: true
 

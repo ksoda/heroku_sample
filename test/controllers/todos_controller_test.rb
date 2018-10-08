@@ -26,7 +26,7 @@ describe TodosController do
     it 'creates a todo' do
       post(
         '/todos',
-        params: { title: 'title', created_by: 'John' }.to_json,
+        params: { title: 'title' }.to_json,
         headers: valid_headers
       )
       value(response).must_be :created?
@@ -46,7 +46,7 @@ describe TodosController do
     it 'returns the todo' do
       post(
         '/todos',
-        params: { title: 'title', created_by: 'John' }.to_json,
+        params: { title: 'title' }.to_json,
         headers: valid_headers
       )
       id = parse_json['id']

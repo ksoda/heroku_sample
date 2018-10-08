@@ -2,8 +2,8 @@
 
 work:
   title: Work
-  created_by: Alice
+  owner: alice
 
 hobby:
   title: Hobby
-  created_by: John
+  owner: john
