@@ -14,11 +14,10 @@ RUN curl -o /usr/local/bin/gosu -SL "$GOSU_URL-$(dpkg --print-architecture)" \
  && chmod +x /usr/local/bin/gosu \
  && chmod +x /usr/local/bin/entrypoint.sh
 
-RUN mkdir /myapp
-WORKDIR /myapp
-COPY Gemfile /myapp/Gemfile
-COPY Gemfile.lock /myapp/Gemfile.lock
+WORKDIR /home/docker
+COPY Gemfile .
+COPY Gemfile.lock .
 RUN bundle install
-COPY . /myapp
+COPY . .
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
