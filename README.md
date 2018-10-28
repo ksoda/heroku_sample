@@ -19,7 +19,7 @@ Assume: `host=example.test`
 docker-compose run --rm web bin/rails db:fixtures:load
 
 # Create User
-http post :3000/users email=john@example.test password=secret name=foo
+http post $host/users email=john@example.test password=secret name=foo
 
 # Get Token
 t=$(http post $host/authentication email=john@example.test password=secret | jq -r .token)
