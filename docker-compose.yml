@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   db:
     image: postgres
@@ -7,9 +7,9 @@ services:
   app: &app
     build: .
     volumes:
-      - .:/home/docker
+      - .:/usr/local/src
       - vendor_bundle:/usr/local/bundle
-      - node_modules:/home/docker/node_modules
+      - node_modules:/usr/local/src/node_modules
   web:
     <<: *app
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
@@ -22,8 +22,8 @@ services:
   deploy:
     image: hashicorp/terraform:light
     volumes:
-      - .:/home/docker
-    working_dir: /home/docker
+      - .:/usr/local/src
+    working_dir: /usr/local/src
 volumes:
   vendor_bundle:
   node_modules:
