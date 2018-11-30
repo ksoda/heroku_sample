@@ -1,0 +1,7 @@
+reek:
+  enabled: true
+flog:
+  enabled: true
+rubocop:
+  enabled: false
+
