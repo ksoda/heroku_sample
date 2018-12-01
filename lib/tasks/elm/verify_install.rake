@@ -15,7 +15,7 @@ namespace :elm do
       warn 'Yarn not installed' && exit!
     end
     Dir.chdir(@path) do
-      _elm_version = 'yarn elm --version'
+      _elm_version = '$(yarn bin)/elm --version'
     end
     puts 'Installation verified'
   end
