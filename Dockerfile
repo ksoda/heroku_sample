@@ -15,8 +15,7 @@ RUN curl -o /usr/local/bin/gosu -SL "$GOSU_URL-$(dpkg --print-architecture)" \
  && chmod +x /usr/local/bin/entrypoint.sh
 
 WORKDIR /home/docker
-COPY Gemfile .
-COPY Gemfile.lock .
+COPY Gemfile Gemfile.lock .
 RUN bundle install
 COPY . .
 
