@@ -7,7 +7,7 @@ ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'pg'
-gem 'rails', '~> 5.2.1'
+gem 'rails', '~> 5.2.2'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
