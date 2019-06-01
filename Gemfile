@@ -35,7 +35,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'minitest-rails'
   gem 'pry-rails'
-  gem 'rubocop', '~> 0.66.0', require: false
+  gem 'rubocop', '~> 0.71.0', require: false
 end
 
 group :development do
