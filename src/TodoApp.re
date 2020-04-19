@@ -5,11 +5,12 @@ type item = {
 };
 module TodoItem = {
   [@react.component]
-  let make = (~item) => {
-    <div className="item">
+  let make = (~item, ~onToggle) => {
+    <div className="item" onClick={_evt => onToggle()}>
       <input
         type_="checkbox"
         checked={item.completed}
+        readOnly=true
         /* TODO make interactive */
       />
       {React.string(item.title)}
@@ -20,7 +21,9 @@ module TodoItem = {
 type state = {items: list(item)};
 
 type action =
-  | AddItem;
+  | AddItem
+  | ToggleItem(int);
+
 let lastId = ref(0);
 let newItem = () => {
   lastId := lastId^ + 1;
@@ -34,6 +37,14 @@ let make = () => {
       (state, action) => {
         switch (action) {
         | AddItem => {items: [newItem(), ...state.items]}
+        | ToggleItem(id) =>
+          let items =
+            List.map(
+              item =>
+                item.id === id ? {...item, completed: !item.completed} : item,
+              state.items,
+            );
+          {items: items};
         }
       },
       {
@@ -49,7 +60,12 @@ let make = () => {
     </div>
     <div className="items">
       {List.map(
-         item => <TodoItem key={string_of_int(item.id)} item />,
+         item =>
+           <TodoItem
+             key={string_of_int(item.id)}
+             onToggle={() => dispatch(ToggleItem(item.id))}
+             item
+           />,
          items,
        )
        |> Array.of_list
