@@ -42,3 +42,6 @@ node_modules/
 /lib
 
 # End of https://www.gitignore.io/api/reasonml,ocaml
+
+*.bs.js
+.bsb.lock
