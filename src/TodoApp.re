@@ -1,20 +1,31 @@
 type item = {
+  id: int,
   title: string,
   completed: bool,
 };
-
-type state = {
-  /* this is a type w/ a type argument,
-   * similar to List<Item> in TypeScript,
-   * Flow, or Java */
-  items: list(item),
+module TodoItem = {
+  [@react.component]
+  let make = (~item) => {
+    <div className="item">
+      <input
+        type_="checkbox"
+        checked={item.completed}
+        /* TODO make interactive */
+      />
+      {React.string(item.title)}
+    </div>;
+  };
 };
+
+type state = {items: list(item)};
 
 type action =
   | AddItem;
-
-// I've gone ahead and made a shortened name for converting strings to elements
-let str = React.string;
+let lastId = ref(0);
+let newItem = () => {
+  lastId := lastId^ + 1;
+  {id: lastId^ + 1, title: "Click a button", completed: true};
+};
 
 [@react.component]
 let make = () => {
@@ -22,23 +33,30 @@ let make = () => {
     React.useReducer(
       (state, action) => {
         switch (action) {
-        | AddItem =>
-          Js.log("AddItem");
-          {items: state.items};
+        | AddItem => {items: [newItem(), ...state.items]}
         }
       },
-      {items: [{title: "Write some things to do", completed: false}]},
+      {
+        items: [{id: 0, title: "Write some things to do", completed: false}],
+      },
     );
   <div className="app">
     <div className="title">
-      {str("What to do")}
+      {React.string("What to do")}
       <button onClick={_evt => dispatch(AddItem)}>
-        {str("Add something")}
+        {React.string("Add something")}
       </button>
     </div>
-    <div className="items"> {str("Nothing")} </div>
+    <div className="items">
+      {List.map(
+         item => <TodoItem key={string_of_int(item.id)} item />,
+         items,
+       )
+       |> Array.of_list
+       |> React.array}
+    </div>
     <div className="footer">
-      {str(string_of_int(List.length(items)) ++ " items")}
+      {(items->List.length->string_of_int ++ " items")->React.string}
     </div>
   </div>;
 };
