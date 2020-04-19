@@ -18,16 +18,38 @@ module TodoItem = {
   };
 };
 
+let valueFromEvent = (evt): string => evt->ReactEvent.Form.target##value;
+module Input = {
+  type state = string;
+  [@react.component]
+  let make = (~onSubmit) => {
+    let (text, setText) =
+      React.useReducer((oldText, newText) => newText, "");
+    <input
+      value=text
+      type_="text"
+      placeholder="Write something to do"
+      onChange={evt => setText(valueFromEvent(evt))}
+      onKeyDown={evt =>
+        if (ReactEvent.Keyboard.key(evt) == "Enter") {
+          onSubmit(text);
+          setText("");
+        }
+      }
+    />;
+  };
+};
+
 type state = {items: list(item)};
 
 type action =
-  | AddItem
+  | AddItem(string)
   | ToggleItem(int);
 
 let lastId = ref(0);
-let newItem = () => {
+let newItem = text => {
   lastId := lastId^ + 1;
-  {id: lastId^ + 1, title: "Click a button", completed: true};
+  {id: lastId^ + 1, title: text, completed: true};
 };
 
 [@react.component]
@@ -36,15 +58,16 @@ let make = () => {
     React.useReducer(
       (state, action) => {
         switch (action) {
-        | AddItem => {items: [newItem(), ...state.items]}
-        | ToggleItem(id) =>
-          let items =
-            List.map(
-              item =>
-                item.id === id ? {...item, completed: !item.completed} : item,
-              state.items,
-            );
-          {items: items};
+        | AddItem(text) => {items: [newItem(text), ...state.items]}
+        | ToggleItem(id) => {
+            items:
+              List.map(
+                item =>
+                  item.id === id
+                    ? {...item, completed: !item.completed} : item,
+                state.items,
+              ),
+          }
         }
       },
       {
@@ -54,9 +77,7 @@ let make = () => {
   <div className="app">
     <div className="title">
       {React.string("What to do")}
-      <button onClick={_evt => dispatch(AddItem)}>
-        {React.string("Add something")}
-      </button>
+      <Input onSubmit={text => dispatch(AddItem(text))} />
     </div>
     <div className="items">
       {List.map(
