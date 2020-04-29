@@ -31,6 +31,12 @@ Check the contents of the `.env` file. If your database requires a password, upd
 DATABASE_URL=postgres://username:password@localhost/actix_todo
 ```
 
+Start DB
+
+```bash
+docker run --net=host --name some-postgres -e POSTGRES_PASSWORD=secret -d postgres
+```
+
 Then to create and set-up the database run:
 
 ```bash
