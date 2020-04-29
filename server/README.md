@@ -52,3 +52,15 @@ cargo run
 ```
 
 Then to view it in your browser navigate to: [http://localhost:8088/](http://localhost:8088/)
+
+## Build the image
+
+```bash
+docker build -t todo .
+```
+
+Then to run the container:
+
+```bash
+docker run --net=host --rm -e DATABASE_URL=postgres://postgres:secret@localhost/todo todo
+```
