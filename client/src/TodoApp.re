@@ -24,7 +24,7 @@ module Input = {
   [@react.component]
   let make = (~onSubmit) => {
     let (text, setText) =
-      React.useReducer((oldText, newText) => newText, "");
+      React.useReducer((_, newText) => newText, "");
     <input
       value=text
       type_="text"
