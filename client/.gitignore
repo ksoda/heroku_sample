@@ -45,3 +45,5 @@ node_modules/
 
 *.bs.js
 .bsb.lock
+
+dist/
