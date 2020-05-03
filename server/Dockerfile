@@ -5,19 +5,13 @@ ENV USER=root
 RUN cargo new --bin /var/local/project
 WORKDIR /var/local/project
 
-COPY Cargo.lock .
-COPY Cargo.toml .
-
-RUN cargo build --release
-
-RUN rm src/*.rs
-RUN rm ./target/release/deps/actix_todo*
-
+COPY Cargo.lock Cargo.toml ./
+RUN cargo build --release \
+    && rm src/*.rs \
+    && rm ./target/release/deps/actix_todo*
 
 COPY src src
 RUN cargo build --release
-
-RUN ls /var/local/project/target/release
 
 FROM rust:1-slim-stretch
 RUN apt-get update \
@@ -35,4 +29,4 @@ COPY templates templates
 
 EXPOSE 8088
 
-ENTRYPOINT ["./actix-todo"]
+CMD ["./actix-todo"]

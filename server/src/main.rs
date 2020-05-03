@@ -57,6 +57,6 @@ async fn main() -> io::Result<()> {
             .service(fs::Files::new("/static", "static/"))
     };
 
-    debug!("Starting server");
+    debug!("Starting server on 8088");
     HttpServer::new(app).bind("localhost:8088")?.run().await
 }
