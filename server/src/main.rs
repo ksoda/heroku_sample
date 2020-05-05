@@ -57,6 +57,14 @@ async fn main() -> io::Result<()> {
             .service(fs::Files::new("/static", "static/"))
     };
 
-    debug!("Starting server on 8088");
-    HttpServer::new(app).bind("localhost:8088")?.run().await
+    let port = env::var("PORT")
+        .unwrap_or_else(|_| "3000".to_string())
+        .parse::<String>()
+        .expect("PORT must be a number string");
+
+    debug!("Starting server on {}", port);
+    HttpServer::new(app)
+        .bind(format!("0.0.0.0:{}", port))?
+        .run()
+        .await
 }
