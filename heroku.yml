@@ -5,4 +5,12 @@ setup:
 
 build:
   docker:
+    worker:
+      dockerfile: server/Dockerfile
+      target: builder
     web: server/Dockerfile
+
+release:
+  image: worker
+  command:
+    - diesel database setup

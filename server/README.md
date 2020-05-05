@@ -6,8 +6,8 @@ A port of the [Rocket Todo example](https://github.com/SergioBenitez/Rocket/tree
 
 ## Prerequisites
 
-* Rust >= 1.26
-* PostgreSQL >= 9.5
+- Rust >= 1.26
+- PostgreSQL >= 9.5
 
 ## Change into the project sub-directory
 
@@ -63,4 +63,20 @@ Then to run the container:
 
 ```bash
 docker run --net=host --rm -e DATABASE_URL=postgres://postgres:secret@localhost/todo todo
+```
+
+## Deploy to Heroku
+
+To deploy the application:
+
+<!-- TODO: Terraform -->
+
+```bash
+sudo snap install --classic heroku
+heroku plugins:install @heroku-cli/plugin-manifest
+name=$(ruby -rhaikunator -e 'puts Haikunator.haikunate')
+heroku create $name --manifest
+heroku addons:create heroku-postgresql:hobby-dev --app $name
+heroku git:remote -a $name
+heroku stack:set container
 ```

@@ -10,12 +10,18 @@ RUN cargo build --release \
     && rm src/*.rs \
     && rm ./target/release/deps/actix_todo*
 
+RUN cargo install diesel_cli \
+    --no-default-features --features postgres
+
 COPY src src
 RUN cargo build --release
+
+COPY migrations migrations
 
 FROM rust:1-slim-stretch
 RUN apt-get update \
     && apt-get install -y \
+    curl \
     libpq-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
