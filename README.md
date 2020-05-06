@@ -7,12 +7,11 @@
 
 ## Deploy to Heroku
 
-[Create an application](#create-an-application)
-
-Then to deploy the application:
+1. [Download and install Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)
+2. [Create an application](#create-an-application)
+3. Then to deploy the application:
 
 ```bash
-sudo snap install --classic heroku
 heroku git:remote -a $(terraform output app_name)
 ```
 
