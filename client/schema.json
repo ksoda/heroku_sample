@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": {},
+  "required": ["tasks"],
+  "additionalProperties": true,
+  "properties": {
+    "tasks": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "$id": "#/properties/task",
+        "type": "object",
+        "title": "The task schema",
+        "description": "An explanation about the purpose of this instance.",
+        "default": {},
+        "required": ["done", "id", "text", "uuid"],
+        "properties": {
+          "done": {
+            "$id": "#/properties/task/done",
+            "type": "boolean",
+            "title": "The done schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [false]
+          },
+          "id": {
+            "$id": "#/properties/task/id",
+            "type": "integer",
+            "minimum": 1,
+            "title": "The id schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0,
+            "examples": [2]
+          },
+          "text": {
+            "$id": "#/properties/task/text",
+            "type": "string",
+            "title": "The text schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["do something"]
+          },
+          "uuid": {
+            "$id": "#/properties/task/uuid",
+            "type": "string",
+            "format": "uuid",
+            "title": "The uuid schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["3372137d-b582-4e32-807d-af3021112efa"]
+          }
+        }
+      }
+    }
+  }
+}
