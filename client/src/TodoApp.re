@@ -1,19 +1,14 @@
-type item = {
-  id: int,
-  title: string,
-  completed: bool,
-};
 module TodoItem = {
   [@react.component]
-  let make = (~item, ~onToggle) => {
+  let make = (~task: TaskData.task, ~onToggle) => {
     <div className="item" onClick={_evt => onToggle()}>
       <input
         type_="checkbox"
-        checked={item.completed}
+        checked={task.completed}
         readOnly=true
         /* TODO make interactive */
       />
-      {React.string(item.title)}
+      {React.string(task.title)}
     </div>;
   };
 };
@@ -23,8 +18,7 @@ module Input = {
   type state = string;
   [@react.component]
   let make = (~onSubmit) => {
-    let (text, setText) =
-      React.useReducer((_, newText) => newText, "");
+    let (text, setText) = React.useReducer((_, newText) => newText, "");
     <input
       value=text
       type_="text"
@@ -40,60 +34,81 @@ module Input = {
   };
 };
 
-type state = {items: list(item)};
+type state = {
+  tasks: TaskData.tasks,
+  loading: bool,
+};
 
 type action =
+  | Loading
+  | Loaded(TaskData.tasks)
   | AddItem(string)
   | ToggleItem(int);
 
 let lastId = ref(0);
-let newItem = text => {
-  lastId := lastId^ + 1;
-  {id: lastId^ + 1, title: text, completed: true};
-};
+let newItem: string => TaskData.task =
+  text => {
+    lastId := lastId^ + 1;
+    {id: lastId^ + 1, title: text, completed: true, uuid: "_"};
+  };
+
+let initialState = {tasks: [], loading: false};
 
 [@react.component]
 let make = () => {
-  let ({items}, dispatch) =
+  let ({tasks}, dispatch) =
     React.useReducer(
       (state, action) => {
         switch (action) {
-        | AddItem(text) => {items: [newItem(text), ...state.items]}
+        | Loading => {...state, loading: true}
+        | Loaded(tasks) => {
+            ...state,
+            tasks: List.concat([state.tasks, tasks]),
+          }
+        | AddItem(text) => {
+            ...state,
+            tasks: [newItem(text), ...state.tasks],
+          }
         | ToggleItem(id) => {
-            items:
+            ...state,
+            tasks:
               List.map(
-                item =>
-                  item.id === id
-                    ? {...item, completed: !item.completed} : item,
-                state.items,
+                (task: TaskData.task) =>
+                  task.id === id
+                    ? {...task, completed: !task.completed} : task,
+                state.tasks,
               ),
           }
         }
       },
-      {
-        items: [{id: 0, title: "Write some things to do", completed: false}],
-      },
+      initialState,
     );
+  React.useEffect0(() => {
+    TaskData.fetchTasks(payload => dispatch(Loaded(payload))) |> ignore;
+    dispatch(Loading);
+    None;
+  });
+
   <div className="app">
     <div className="title">
       {React.string("What to do")}
       <Input onSubmit={text => dispatch(AddItem(text))} />
     </div>
-    <div className="items">
+    <div className="tasks">
       {List.map(
-         item =>
+         (task: TaskData.task) =>
            <TodoItem
-             key={string_of_int(item.id)}
-             onToggle={() => dispatch(ToggleItem(item.id))}
-             item
+             key={string_of_int(task.id)}
+             onToggle={() => dispatch(ToggleItem(task.id))}
+             task
            />,
-         items,
+         tasks,
        )
        |> Array.of_list
        |> React.array}
     </div>
     <div className="footer">
-      {(items->List.length->string_of_int ++ " items")->React.string}
+      {(tasks->List.length->string_of_int ++ " tasks")->React.string}
     </div>
   </div>;
 };

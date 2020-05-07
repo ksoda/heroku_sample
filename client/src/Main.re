@@ -27,5 +27,4 @@ let makeContainer = text => {
   content;
 };
 
-ReactDOMRe.renderToElementWithId(<FetchedDogPictures />, "root");
-/* ReactDOMRe.renderToElementWithId(<TodoApp />, "root"); */
+ReactDOMRe.renderToElementWithId(<TodoApp />, "root");
