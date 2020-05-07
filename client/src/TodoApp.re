@@ -56,13 +56,13 @@ let initialState = {tasks: [], loading: false};
 
 [@react.component]
 let make = () => {
-  let ({tasks}, dispatch) =
+  let ({tasks, loading}, dispatch) =
     React.useReducer(
       (state, action) => {
         switch (action) {
         | Loading => {...state, loading: true}
         | Loaded(tasks) => {
-            ...state,
+            loading: false,
             tasks: List.concat([state.tasks, tasks]),
           }
         | AddItem(text) => {
@@ -89,26 +89,28 @@ let make = () => {
     None;
   });
 
-  <div className="app">
-    <div className="title">
-      {React.string("What to do")}
-      <Input onSubmit={text => dispatch(AddItem(text))} />
-    </div>
-    <div className="tasks">
-      {List.map(
-         (task: TaskData.task) =>
-           <TodoItem
-             key={string_of_int(task.id)}
-             onToggle={() => dispatch(ToggleItem(task.id))}
-             task
-           />,
-         tasks,
-       )
-       |> Array.of_list
-       |> React.array}
-    </div>
-    <div className="footer">
-      {(tasks->List.length->string_of_int ++ " tasks")->React.string}
-    </div>
-  </div>;
+  loading
+    ? <div> "loading"->React.string </div>
+    : <div className="app">
+        <div className="title">
+          {React.string("What to do")}
+          <Input onSubmit={text => dispatch(AddItem(text))} />
+        </div>
+        <div className="tasks">
+          {List.map(
+             (task: TaskData.task) =>
+               <TodoItem
+                 key={string_of_int(task.id)}
+                 onToggle={() => dispatch(ToggleItem(task.id))}
+                 task
+               />,
+             tasks,
+           )
+           |> Array.of_list
+           |> React.array}
+        </div>
+        <div className="footer">
+          {(tasks->List.length->string_of_int ++ " tasks")->React.string}
+        </div>
+      </div>;
 };
