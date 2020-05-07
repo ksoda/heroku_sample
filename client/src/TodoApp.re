@@ -49,7 +49,7 @@ let lastId = ref(0);
 let newItem: string => TaskData.task =
   text => {
     lastId := lastId^ + 1;
-    {id: lastId^ + 1, title: text, completed: true, uuid: "_"};
+    {id: lastId^, title: text, completed: true, uuid: "_"};
   };
 
 let initialState = {tasks: [], loading: false};
