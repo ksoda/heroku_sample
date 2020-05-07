@@ -9,8 +9,7 @@ type state =
 let make = () => {
   let (state, setState) = React.useState(() => LoadingDogs);
 
-  // Notice that instead of `useEffect`, we have `useEffect0`. See
-  // reasonml.github.io/reason-react/docs/en/components#hooks for more info
+  // see reasonml.github.io/reason-react/docs/en/components#hooks for more info
   React.useEffect0(() => {
     Js.Promise.(
       fetch("https://dog.ceo/api/breeds/image/random/3")
@@ -26,13 +25,8 @@ let make = () => {
       |> ignore
     );
 
-    // Returning None, instead of Some(() => ...), means we don't have any
-    // cleanup to do before unmounting. That's not 100% true. We should
-    // technically cancel the promise. Unofortunately, there's currently no
-    // way to cancel a promise. Promises in general should be way less used
-    // for React components; but since folks do use them, we provide such an
-    // example here. In reality, this fetch should just be a plain callback,
-    // with a cancellation API
+    // No cleanup to do before unmounting
+    // this fetch should just be a plain callback, with a cancellation API
     None;
   });
 
