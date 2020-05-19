@@ -22,6 +22,7 @@ module Decode = {
 
   let tasks = (json): list(task) => Json.Decode.(json |> list(task));
 };
+
 let fetchTasks = callback =>
   Js.Promise.(
     fetch(tasksUrl)

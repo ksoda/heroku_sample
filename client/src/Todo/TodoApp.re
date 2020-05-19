@@ -1,6 +1,6 @@
 module TodoItem = {
   [@react.component]
-  let make = (~task: TaskData.task, ~onToggle) => {
+  let make = (~task: TaskCommand.task, ~onToggle) => {
     <div className="item" onClick={_evt => onToggle()}>
       <input
         type_="checkbox"
@@ -35,18 +35,18 @@ module Input = {
 };
 
 type state = {
-  tasks: TaskData.tasks,
+  tasks: TaskCommand.tasks,
   loading: bool,
 };
 
 type action =
   | Loading
-  | Loaded(TaskData.tasks)
+  | Loaded(TaskCommand.tasks)
   | AddItem(string)
   | ToggleItem(int);
 
 let lastId = ref(0);
-let newItem: string => TaskData.task =
+let newItem: string => TaskCommand.task =
   text => {
     lastId := lastId^ + 1;
     {id: lastId^, title: text, completed: false, uuid: "_"};
@@ -73,7 +73,7 @@ let make = () => {
             ...state,
             tasks:
               List.map(
-                (task: TaskData.task) =>
+                (task: TaskCommand.task) =>
                   task.id === id
                     ? {...task, completed: !task.completed} : task,
                 state.tasks,
@@ -84,7 +84,7 @@ let make = () => {
       initialState,
     );
   React.useEffect0(() => {
-    TaskData.fetchTasks(payload => dispatch(Loaded(payload))) |> ignore;
+    TaskCommand.fetchTasks(payload => dispatch(Loaded(payload))) |> ignore;
     dispatch(Loading);
     None;
   });
@@ -98,7 +98,7 @@ let make = () => {
         </div>
         <div className="tasks">
           {List.map(
-             (task: TaskData.task) =>
+             (task: TaskCommand.task) =>
                <TodoItem
                  key={string_of_int(task.id)}
                  onToggle={() => dispatch(ToggleItem(task.id))}
