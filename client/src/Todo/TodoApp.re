@@ -49,7 +49,7 @@ let lastId = ref(0);
 let newItem: string => TaskCommand.task =
   text => {
     lastId := lastId^ + 1;
-    {id: lastId^, title: text, completed: false, uuid: "_"};
+    {id: lastId^, title: text, completed: false};
   };
 
 let initialState = {tasks: [], loading: false};
@@ -66,9 +66,12 @@ let make = () => {
             tasks: List.concat([state.tasks, tasks]),
           }
         | AddItem(text) => {
+          /* TODO: handle promise */
+          TaskCommand.createTask(text, _=>());
+          {
             ...state,
             tasks: [newItem(text), ...state.tasks],
-          }
+          }}
         | ToggleItem(id) => {
             ...state,
             tasks:
