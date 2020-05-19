@@ -10,7 +10,7 @@
     "clean": "bsb -clean-world",
     "serve": "moduleserve ./ --port 8000",
     "serve:db": "node bin/genstub.js | tee /tmp/db.json && json-server --watch /tmp/db.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run build:bs && jest"
   },
   "keywords": [
     "BuckleScript",
@@ -26,6 +26,7 @@
     "reason-react": ">=0.7.0"
   },
   "devDependencies": {
+    "@glennsl/bs-jest": "^0.5.1",
     "bs-platform": "^7.2.2",
     "json-schema-faker": "^0.5.0-rcv.24",
     "json-server": "^0.16.1",
