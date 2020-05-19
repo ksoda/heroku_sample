@@ -1,5 +1,5 @@
 {
-  "name": "my-react-app",
+  "name": "my-todo-app",
   "version": "0.1.0",
   "scripts": {
     "build": "npm run build:bs && npm run build:js && npm run build:cp",
