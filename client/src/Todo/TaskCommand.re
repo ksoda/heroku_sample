@@ -55,5 +55,4 @@ let fetchTasks = callback =>
            }
          )
        )
-    |> ignore
   );

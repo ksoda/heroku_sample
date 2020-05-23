@@ -67,7 +67,7 @@ let make = () => {
           }
         | AddItem(text) =>
           /* TODO: handle promise */
-          TaskCommand.createTask(text, _ => ());
+          TaskCommand.createTask(text, _ => ()) |> ignore;
           {...state, tasks: [newItem(text), ...state.tasks]};
         | ToggleItem(id) => {
             ...state,
