@@ -8,6 +8,7 @@ module.exports = {
   devServer: {
     overlay: true,
     progress: true,
+    open: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
