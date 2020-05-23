@@ -21,7 +21,7 @@ module Decode = {
   let tasks = (json): list(task) => Json.Decode.(json |> list(task));
 };
 
-let createTask = text => callback => {
+let createTask = (text, callback) => {
   let payload = Js.Dict.empty();
   Js.Dict.set(payload, "text", Js.Json.string(text));
   Js.Dict.set(payload, "done", Js.Json.boolean(false));
@@ -30,15 +30,16 @@ let createTask = text => callback => {
       tasksUrl,
       Fetch.RequestInit.make(
         ~method_=Post,
-        ~body=Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(payload))),
+        ~body=
+          Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(payload))),
         ~headers=Fetch.HeadersInit.make({"Content-Type": "application/json"}),
-        ()
-      )
+        (),
+      ),
     )
     |> then_(Fetch.Response.json)
-  |> then_(r => callback(r) |> resolve)
+    |> then_(r => callback(r) |> resolve)
   );
-}
+};
 
 let fetchTasks = callback =>
   Js.Promise.(

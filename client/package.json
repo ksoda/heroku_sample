@@ -7,6 +7,7 @@
     "build:cp": "cp indexProduction.html dist/index.html",
     "build:js": "webpack --config webpack.config.js",
     "clean": "bsb -clean-world",
+    "lint:fmt": "find src/ __tests__/ -name '*.re' | xargs refmt --in-place",
     "serve:db": "node bin/genstub.js | tee /tmp/db.json && json-server --watch /tmp/db.json",
     "serve:js": "webpack-dev-server",
     "start": "npm run serve:db | npm run serve:js | bsb -make-world -w -ws _ ",

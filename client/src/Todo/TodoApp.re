@@ -65,13 +65,10 @@ let make = () => {
             loading: false,
             tasks: List.concat([state.tasks, tasks]),
           }
-        | AddItem(text) => {
+        | AddItem(text) =>
           /* TODO: handle promise */
-          TaskCommand.createTask(text, _=>());
-          {
-            ...state,
-            tasks: [newItem(text), ...state.tasks],
-          }}
+          TaskCommand.createTask(text, _ => ());
+          {...state, tasks: [newItem(text), ...state.tasks]};
         | ToggleItem(id) => {
             ...state,
             tasks:
