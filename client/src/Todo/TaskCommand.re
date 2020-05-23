@@ -1,5 +1,3 @@
-[@bs.val] external fetch: string => Js.Promise.t('a) = "fetch";
-
 let tasksUrl = "http://localhost:3000/tasks";
 
 type task = {
@@ -21,7 +19,7 @@ module Decode = {
   let tasks = (json): list(task) => Json.Decode.(json |> list(task));
 };
 
-let createTask = (text, callback) => {
+let createTask = text => {
   let payload = Js.Dict.empty();
   Js.Dict.set(payload, "text", Js.Json.string(text));
   Js.Dict.set(payload, "done", Js.Json.boolean(false));
@@ -37,22 +35,13 @@ let createTask = (text, callback) => {
       ),
     )
     |> then_(Fetch.Response.json)
-    |> then_(r => callback(r) |> resolve)
+    |> then_(json => json |> Decode.task |> resolve)
   );
 };
 
-let fetchTasks = callback =>
+let fetchTasks = () =>
   Js.Promise.(
-    fetch(tasksUrl)
-    |> then_(response => response##json())
-    |> then_(json =>
-         json
-         |> Decode.tasks
-         |> (
-           tasks => {
-             callback(tasks);
-             resolve();
-           }
-         )
-       )
+    Fetch.fetch(tasksUrl)
+    |> then_(Fetch.Response.json)
+    |> then_(json => json |> Decode.tasks |> resolve)
   );

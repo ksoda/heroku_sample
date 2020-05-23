@@ -67,7 +67,7 @@ let make = () => {
           }
         | AddItem(text) =>
           /* TODO: handle promise */
-          TaskCommand.createTask(text, _ => ()) |> ignore;
+          TaskCommand.createTask(text) |> ignore;
           {...state, tasks: [newItem(text), ...state.tasks]};
         | ToggleItem(id) => {
             ...state,
@@ -84,7 +84,9 @@ let make = () => {
       initialState,
     );
   React.useEffect0(() => {
-    TaskCommand.fetchTasks(payload => dispatch(Loaded(payload))) |> ignore;
+    TaskCommand.fetchTasks()
+    |> Js.Promise.(then_(payload => resolve(dispatch(Loaded(payload)))))
+    |> ignore;
     dispatch(Loading);
     None;
   });
