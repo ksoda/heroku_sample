@@ -45,13 +45,6 @@ type action =
   | AddItem(TaskCommand.task)
   | ToggleItem(int);
 
-let lastId = ref(0);
-let newItem: string => TaskCommand.task =
-  text => {
-    lastId := lastId^ + 1;
-    {id: lastId^, title: text, completed: false};
-  };
-
 let initialState = {tasks: [], loading: false};
 
 [@react.component]
@@ -65,10 +58,7 @@ let make = () => {
             loading: false,
             tasks: List.concat([state.tasks, tasks]),
           }
-        | AddItem(task) => {
-            ...state,
-            tasks: [newItem(task.title), ...state.tasks],
-          }
+        | AddItem(task) => {...state, tasks: [task, ...state.tasks]}
         | ToggleItem(id) => {
             ...state,
             tasks:
@@ -109,15 +99,17 @@ let make = () => {
           />
         </div>
         <div className="tasks">
-          {List.map(
-             (task: TaskCommand.task) =>
-               <TodoItem
-                 key={string_of_int(task.id)}
-                 onToggle={() => dispatch(ToggleItem(task.id))}
-                 task
-               />,
-             tasks,
-           )
+          {tasks
+           |> List.sort((s: TaskCommand.task, t: TaskCommand.task) =>
+                compare(t.id, s.id)
+              )
+           |> List.map((task: TaskCommand.task) =>
+                <TodoItem
+                  key={string_of_int(task.id)}
+                  onToggle={() => dispatch(ToggleItem(task.id))}
+                  task
+                />
+              )
            |> Array.of_list
            |> React.array}
         </div>
