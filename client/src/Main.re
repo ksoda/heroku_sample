@@ -27,4 +27,10 @@ let makeContainer = text => {
   content;
 };
 
-ReactDOMRe.renderToElementWithId(<TodoApp />, "root");
+let service_url = [%raw
+  {|
+  JSON.parse(document.querySelector("#entry").textContent)
+|}
+];
+
+ReactDOMRe.renderToElementWithId(<TodoApp service_url />, "root");

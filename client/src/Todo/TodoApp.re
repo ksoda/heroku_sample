@@ -48,7 +48,7 @@ type action =
 let initialState = {tasks: [], loading: false};
 
 [@react.component]
-let make = () => {
+let make = (~service_url) => {
   let ({tasks, loading}, dispatch) =
     React.useReducer(
       (state, action) => {
@@ -74,6 +74,7 @@ let make = () => {
       initialState,
     );
   React.useEffect0(() => {
+    TaskCommand.setServiceUrl(service_url);
     TaskCommand.fetchTasks()
     |> Js.Promise.(then_(payload => resolve(dispatch(Loaded(payload)))))
     |> ignore;

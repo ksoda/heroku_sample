@@ -2,10 +2,9 @@
   "name": "my-todo-app",
   "version": "0.1.0",
   "scripts": {
-    "build": "npm run build:bs && npm run build:js && npm run build:cp",
+    "build": "npm run build:bs && npm run build:js",
     "build:bs": "bsb -make-world",
-    "build:cp": "cp indexProduction.html dist/index.html",
-    "build:js": "webpack --config webpack.config.js",
+    "build:js": "webpack --config webpack.config.js --mode production",
     "clean": "bsb -clean-world",
     "format": "find src/ __tests__/ -name '*.re' | xargs refmt --in-place",
     "format:auto": "chokidar 'src/**/*.re' -c \"test '{event}' = 'change' && refmt --in-place '{path}'\" --debounce 2000 --silent",

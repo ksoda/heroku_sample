@@ -1,4 +1,11 @@
-let tasksUrl = "http://localhost:3000/tasks";
+let service_url = ref("");
+let tasksUrl = () => {
+  let url = service_url^;
+  {j|$(url)/tasks|j};
+};
+let setServiceUrl = url => {
+  service_url := url;
+};
 
 type task = {
   completed: bool,
@@ -26,7 +33,7 @@ let createTask: string => Js.Promise.t(task) =
     Js.Dict.set(payload, "done", Js.Json.boolean(false));
     Js.Promise.(
       Fetch.fetchWithInit(
-        tasksUrl,
+        tasksUrl(),
         Fetch.RequestInit.make(
           ~method_=Post,
           ~body=
@@ -45,7 +52,7 @@ let createTask: string => Js.Promise.t(task) =
 
 let fetchTasks = () =>
   Js.Promise.(
-    Fetch.fetch(tasksUrl)
+    Fetch.fetch(tasksUrl())
     |> then_(Fetch.Response.json)
     |> then_(json => json |> Decode.tasks |> resolve)
   );
