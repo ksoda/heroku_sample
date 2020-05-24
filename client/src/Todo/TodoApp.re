@@ -42,7 +42,7 @@ type state = {
 type action =
   | Loading
   | Loaded(TaskCommand.tasks)
-  | AddItem(string)
+  | AddItem(TaskCommand.task)
   | ToggleItem(int);
 
 let lastId = ref(0);
@@ -65,10 +65,10 @@ let make = () => {
             loading: false,
             tasks: List.concat([state.tasks, tasks]),
           }
-        | AddItem(text) =>
-          /* TODO: handle promise */
-          TaskCommand.createTask(text) |> ignore;
-          {...state, tasks: [newItem(text), ...state.tasks]};
+        | AddItem(task) => {
+            ...state,
+            tasks: [newItem(task.title), ...state.tasks],
+          }
         | ToggleItem(id) => {
             ...state,
             tasks:
@@ -96,7 +96,17 @@ let make = () => {
     : <div className="app">
         <div className="title">
           {React.string("What to do")}
-          <Input onSubmit={text => dispatch(AddItem(text))} />
+          <Input
+            onSubmit={text => {
+              TaskCommand.createTask(text)
+              |> Js.Promise.(
+                   then_(task => {
+                     dispatch(AddItem(task));
+                     resolve(task);
+                   })
+                 )
+            }}
+          />
         </div>
         <div className="tasks">
           {List.map(
