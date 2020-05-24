@@ -14,6 +14,7 @@ module.exports = (env, argv) => {
     plugins: [
       new HtmlWebpackPlugin({
         template: "index.ejs",
+        scriptLoading: "defer",
         templateParameters: {
           service: JSON.stringify(
             argv.mode === "production"
