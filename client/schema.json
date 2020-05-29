@@ -17,10 +17,10 @@
         "title": "The task schema",
         "description": "An explanation about the purpose of this instance.",
         "default": {},
-        "required": ["done", "id", "text", "uuid"],
+        "required": ["completed", "id", "description"],
         "properties": {
-          "done": {
-            "$id": "#/properties/task/done",
+          "completed": {
+            "$id": "#/properties/task/completed",
             "type": "boolean",
             "title": "The done schema",
             "description": "An explanation about the purpose of this instance.",
@@ -36,22 +36,13 @@
             "default": 0,
             "examples": [2]
           },
-          "text": {
-            "$id": "#/properties/task/text",
+          "description": {
+            "$id": "#/properties/task/description",
             "type": "string",
             "title": "The text schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
             "examples": ["do something"]
-          },
-          "uuid": {
-            "$id": "#/properties/task/uuid",
-            "type": "string",
-            "format": "uuid",
-            "title": "The uuid schema",
-            "description": "An explanation about the purpose of this instance.",
-            "default": "",
-            "examples": ["3372137d-b582-4e32-807d-af3021112efa"]
           }
         }
       }

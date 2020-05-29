@@ -18,9 +18,9 @@ type tasks = list(task);
 module Decode = {
   let task = (json): task =>
     Json.Decode.{
-      completed: json |> field("done", bool),
+      completed: json |> field("completed", bool),
       id: json |> field("id", int),
-      title: json |> field("text", string),
+      title: json |> field("description", string),
     };
 
   let tasks = (json): list(task) => Json.Decode.(json |> list(task));
@@ -29,8 +29,8 @@ module Decode = {
 let createTask: string => Js.Promise.t(task) =
   text => {
     let payload = Js.Dict.empty();
-    Js.Dict.set(payload, "text", Js.Json.string(text));
-    Js.Dict.set(payload, "done", Js.Json.boolean(false));
+    Js.Dict.set(payload, "description", Js.Json.string(text));
+    Js.Dict.set(payload, "completed", Js.Json.boolean(false));
     Js.Promise.(
       Fetch.fetchWithInit(
         tasksUrl(),
@@ -42,6 +42,7 @@ let createTask: string => Js.Promise.t(task) =
             ),
           ~headers=
             Fetch.HeadersInit.make({"Content-Type": "application/json"}),
+          ~mode=CORS,
           (),
         ),
       )

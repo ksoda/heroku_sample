@@ -18,24 +18,16 @@ fn get_conn(pool: &PgPool) -> Result<PgPooledConnection, &'static str> {
 }
 
 pub fn get_all_tasks(pool: &PgPool) -> Result<Vec<Task>, &'static str> {
-    Task::all(get_conn(pool)?.deref()).map_err(|_| "Error inserting task")
+    Task::all(get_conn(pool)?.deref()).map_err(|_| "Error getting tasks")
 }
 
-pub fn create_task(todo: String, pool: &PgPool) -> Result<(), &'static str> {
+pub fn create_task(todo: String, pool: &PgPool) -> Result<Task, &'static str> {
     let new_task = NewTask { description: todo };
-    Task::insert(new_task, get_conn(pool)?.deref())
-        .map(|_| ())
-        .map_err(|_| "Error inserting task")
+    Task::insert(new_task, get_conn(pool)?.deref()).map_err(|_| "Error inserting task")
 }
 
 pub fn toggle_task(id: i32, pool: &PgPool) -> Result<(), &'static str> {
     Task::toggle_with_id(id, get_conn(pool)?.deref())
         .map(|_| ())
-        .map_err(|_| "Error inserting task")
-}
-
-pub fn delete_task(id: i32, pool: &PgPool) -> Result<(), &'static str> {
-    Task::delete_with_id(id, get_conn(pool)?.deref())
-        .map(|_| ())
-        .map_err(|_| "Error inserting task")
+        .map_err(|_| "Error toggling task")
 }
