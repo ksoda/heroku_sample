@@ -5,20 +5,16 @@ extern crate log;
 
 use std::{env, io};
 
+use actix_cors::Cors;
 use actix_files as fs;
-use actix_session::CookieSession;
 use actix_web::middleware::{errhandlers::ErrorHandlers, Logger};
 use actix_web::{http, web, App, HttpServer};
 use dotenv::dotenv;
-use tera::Tera;
 
 mod api;
 mod db;
 mod model;
 mod schema;
-mod session;
-
-static SESSION_SIGNING_KEY: &[u8] = &[0; 32];
 
 #[actix_rt::main]
 async fn main() -> io::Result<()> {
@@ -33,26 +29,29 @@ async fn main() -> io::Result<()> {
     let app = move || {
         debug!("Constructing the App");
 
-        let templates: Tera = Tera::new("templates/**/*").unwrap();
-
-        let session_store = CookieSession::signed(SESSION_SIGNING_KEY).secure(false);
-
-        let error_handlers = ErrorHandlers::new()
-            .handler(
-                http::StatusCode::INTERNAL_SERVER_ERROR,
-                api::internal_server_error,
-            )
-            .handler(http::StatusCode::BAD_REQUEST, api::bad_request)
-            .handler(http::StatusCode::NOT_FOUND, api::not_found);
+        let error_handlers = ErrorHandlers::new().handler(
+            http::StatusCode::INTERNAL_SERVER_ERROR,
+            api::internal_server_error,
+        );
 
         App::new()
-            .data(templates)
+            .wrap(
+                Cors::new() // <- Construct CORS middleware builder
+                    .allowed_origin("http://localhost:8080")
+                    .allowed_methods(vec!["GET", "POST", "OPTION"])
+                    .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
+                    .allowed_header(http::header::CONTENT_TYPE)
+                    .max_age(3600)
+                    .finish(),
+            )
             .data(pool.clone())
             .wrap(Logger::default())
-            .wrap(session_store)
             .wrap(error_handlers)
-            .service(web::resource("/").route(web::get().to(api::index)))
-            .service(web::resource("/todo").route(web::post().to(api::create)))
+            .service(
+                web::resource("/tasks")
+                    .route(web::get().to(api::index))
+                    .route(web::post().to(api::create)),
+            )
             .service(web::resource("/todo/{id}").route(web::post().to(api::update)))
             .service(fs::Files::new("/static", "static/"))
     };
