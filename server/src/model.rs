@@ -8,7 +8,7 @@ use crate::schema::{
     tasks::dsl::{completed as task_completed, tasks as all_tasks},
 };
 
-#[derive(Debug, Insertable)]
+#[derive(Debug, Insertable, Deserialize)]
 #[table_name = "tasks"]
 pub struct NewTask {
     pub description: String,

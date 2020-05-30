@@ -30,7 +30,6 @@ let createTask: string => Js.Promise.t(task) =
   text => {
     let payload = Js.Dict.empty();
     Js.Dict.set(payload, "description", Js.Json.string(text));
-    Js.Dict.set(payload, "completed", Js.Json.boolean(false));
     Js.Promise.(
       Fetch.fetchWithInit(
         tasksUrl(),

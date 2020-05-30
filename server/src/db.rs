@@ -21,9 +21,8 @@ pub fn get_all_tasks(pool: &PgPool) -> Result<Vec<Task>, &'static str> {
     Task::all(get_conn(pool)?.deref()).map_err(|_| "Error getting tasks")
 }
 
-pub fn create_task(todo: String, pool: &PgPool) -> Result<Task, &'static str> {
-    let new_task = NewTask { description: todo };
-    Task::insert(new_task, get_conn(pool)?.deref()).map_err(|_| "Error inserting task")
+pub fn create_task(todo: NewTask, pool: &PgPool) -> Result<Task, &'static str> {
+    Task::insert(todo, get_conn(pool)?.deref()).map_err(|_| "Error inserting task")
 }
 
 pub fn toggle_task(id: i32, pool: &PgPool) -> Result<(), &'static str> {

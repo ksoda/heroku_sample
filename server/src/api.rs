@@ -2,6 +2,8 @@ use actix_files::NamedFile;
 use actix_web::middleware::errhandlers::ErrorHandlerResponse;
 use actix_web::{dev, web, Error, HttpResponse, Result};
 
+use crate::model::NewTask;
+
 use crate::db;
 
 pub async fn index(pool: web::Data<db::PgPool>) -> Result<HttpResponse, Error> {
@@ -10,10 +12,14 @@ pub async fn index(pool: web::Data<db::PgPool>) -> Result<HttpResponse, Error> {
     Ok(HttpResponse::Ok().body(j))
 }
 
-pub async fn create(pool: web::Data<db::PgPool>) -> Result<HttpResponse, Error> {
-    let desc = "task".to_string();
-    let task = web::block(move || db::create_task(desc, &pool)).await?;
-    Ok(HttpResponse::Created().json(task))
+pub async fn create(
+    pool: web::Data<db::PgPool>,
+    item: web::Json<NewTask>,
+) -> Result<HttpResponse, Error> {
+    let task = web::block(move || db::create_task(item.into_inner(), &pool)).await?;
+    let j = serde_json::to_string(&task)?;
+    println!("{:?}", j);
+    Ok(HttpResponse::Created().body(j))
 }
 
 pub async fn update(db: web::Data<db::PgPool>) -> Result<HttpResponse, Error> {
