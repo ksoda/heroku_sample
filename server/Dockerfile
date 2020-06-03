@@ -31,7 +31,6 @@ WORKDIR /var/local
 COPY --from=builder /var/local/project/target/release/actix-todo .
 
 COPY static static
-COPY templates templates
 
 EXPOSE 8088
 
