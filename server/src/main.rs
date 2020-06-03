@@ -37,7 +37,7 @@ async fn main() -> io::Result<()> {
         App::new()
             .wrap(
                 Cors::new() // <- Construct CORS middleware builder
-                    .allowed_origin("http://localhost:8080")
+                    .allowed_origin("https://eager-kirch-141aec.netlify.app")
                     .allowed_methods(vec!["GET", "POST", "OPTION"])
                     .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
                     .allowed_header(http::header::CONTENT_TYPE)
