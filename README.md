@@ -16,17 +16,23 @@ set `ADMIN_APP`
 export ADMIN_APP=terraform-admin
 ```
 
-or
+or if you use fish shell
 
 ```fish
 set -l ADMIN_APP terraform-admin
 ```
 
-After set up admin project
+After [Set up admin project](#set-up-admin-project)
 
 ```bash
 terraform init -backend-config="conn_str=$(heroku config:get DATABASE_URL --app $ADMIN_APP)"
 terraform apply -var netlify_token=$(cat token)
+```
+
+### Destroy
+
+```bash
+terraform destroy
 ```
 
 ### Set environments of Netlify
@@ -45,12 +51,6 @@ echo "SERVICE_URL=$(terraform output server_url)"
 
 ```bash
 echo RESOURCE_SHARING_URL=$(terraform output client_url)
-```
-
-Destroy:
-
-```bash
-terraform destroy
 ```
 
 ### Set up admin project
