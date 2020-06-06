@@ -32,6 +32,6 @@ COPY --from=builder /var/local/project/target/release/actix-todo .
 
 COPY static static
 
-EXPOSE 8088
+EXPOSE 3000
 
 CMD ["./actix-todo"]
