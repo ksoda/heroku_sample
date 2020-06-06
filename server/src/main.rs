@@ -25,6 +25,11 @@ async fn main() -> io::Result<()> {
 
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let pool = db::init_pool(&database_url).expect("Failed to create pool");
+    let mut resource_sharing_url =
+        env::var("RESOURCE_SHARING_URL").expect("RESOURCE_SHARING_URL must be set");
+    if resource_sharing_url.ends_with('/') {
+        resource_sharing_url.pop();
+    }
 
     let app = move || {
         debug!("Constructing the App");
@@ -37,10 +42,7 @@ async fn main() -> io::Result<()> {
         App::new()
             .wrap(
                 Cors::new() // <- Construct CORS middleware builder
-                    .allowed_origin(
-                        &env::var("RESOURCE_SHARING_URL")
-                            .expect("RESOURCE_SHARING_URL must be set"),
-                    )
+                    .allowed_origin(&resource_sharing_url)
                     .allowed_methods(vec!["GET", "POST", "OPTION"])
                     .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
                     .allowed_header(http::header::CONTENT_TYPE)

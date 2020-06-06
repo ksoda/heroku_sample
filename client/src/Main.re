@@ -29,7 +29,7 @@ let makeContainer = text => {
 
 let service_url = [%raw
   {|
-  JSON.parse(document.querySelector("#entry").textContent)
+  new URL(JSON.parse(document.querySelector("#entry").textContent)).origin
 |}
 ];
 

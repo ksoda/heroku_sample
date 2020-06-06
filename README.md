@@ -5,7 +5,7 @@
 3. Then to deploy the application:
 
 ```bash
-heroku git:remote -a $(terraform output app_name)
+heroku git:remote -a $(terraform output server_url)
 ```
 
 ## Create an application
