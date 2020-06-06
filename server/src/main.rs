@@ -37,7 +37,10 @@ async fn main() -> io::Result<()> {
         App::new()
             .wrap(
                 Cors::new() // <- Construct CORS middleware builder
-                    .allowed_origin("https://eager-kirch-141aec.netlify.app")
+                    .allowed_origin(
+                        &env::var("RESOURCE_SHARING_URL")
+                            .expect("RESOURCE_SHARING_URL must be set"),
+                    )
                     .allowed_methods(vec!["GET", "POST", "OPTION"])
                     .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
                     .allowed_header(http::header::CONTENT_TYPE)
