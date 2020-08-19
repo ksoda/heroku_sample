@@ -11,12 +11,24 @@
     {
       "dir": "__tests__",
       "type": "dev"
+    },
+    {
+      "dir": "components",
+      "subdirs": true
+    },
+    {
+      "dir": "pages",
+      "subdirs": true
+    },
+    {
+      "dir": "bindings",
+      "subdirs": true
     }
   ],
   "bsc-flags": ["-bs-super-errors", "-bs-no-version-header"],
   "package-specs": [
     {
-      "module": "commonjs",
+      "module": "es6",
       "in-source": true
     }
   ],

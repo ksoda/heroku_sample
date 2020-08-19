@@ -33,4 +33,4 @@ let service_url = [%raw
 |}
 ];
 
-ReactDOMRe.renderToElementWithId(<TodoApp service_url />, "root");
+ReactDOMRe.renderToElementWithId(<TodoAppLegacy service_url />, "root");
