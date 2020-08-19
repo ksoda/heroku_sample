@@ -1,3 +1,5 @@
+[@bs.module "isomorphic-unfetch"] external fetch: string => 'a = "default";
+
 let service_url = ref("");
 let tasksUrl = () => {
   let url = service_url^;
@@ -31,28 +33,23 @@ let createTask: string => Js.Promise.t(task) =
     let payload = Js.Dict.empty();
     Js.Dict.set(payload, "description", Js.Json.string(text));
     Js.Promise.(
-      Fetch.fetchWithInit(
+      fetch(
         tasksUrl(),
-        Fetch.RequestInit.make(
-          ~method_=Post,
-          ~body=
-            Fetch.BodyInit.make(
-              Js.Json.stringify(Js.Json.object_(payload)),
-            ),
-          ~headers=
-            Fetch.HeadersInit.make({"Content-Type": "application/json"}),
-          ~mode=CORS,
-          (),
-        ),
+        /* {
+             method = "POST";
+             body = Js.Json.stringify(Js.Json.object_(payload));
+             headers = {"Content-Type"= "application/json"};
+             mode = "cors";
+           }, */
       )
-      |> then_(Fetch.Response.json)
+      |> then_(r => r##json())
       |> then_(json => json |> Decode.task |> resolve)
     );
   };
 
 let fetchTasks = () =>
   Js.Promise.(
-    Fetch.fetch(tasksUrl())
-    |> then_(Fetch.Response.json)
+    fetch(tasksUrl())
+    |> then_(r => r##json())
     |> then_(json => json |> Decode.tasks |> resolve)
   );

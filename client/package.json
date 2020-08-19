@@ -24,6 +24,7 @@
     "@glennsl/bs-json": "^5.0.2",
     "bs-fetch": "^0.5.2",
     "graphql": "^15.3.0",
+    "isomorphic-unfetch": "^3.0.0",
     "next": "^9.5.2",
     "next-transpile-modules": "^4.1.0",
     "react": "^16.8.1",
