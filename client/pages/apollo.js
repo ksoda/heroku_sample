@@ -1,12 +1,12 @@
 import App from "../components/App";
 import InfoBox from "../components/InfoBox";
-import Header from "../components/Header_";
+import Header from "../components/Header.bs";
 import Submit from "../components/Submit";
 import PostList, {
   ALL_POSTS_QUERY,
   allPostsQueryVars,
 } from "../components/PostList";
-import { initializeApollo } from "../lib/apolloClient";
+import { initializeApollo } from "../src/apolloClient";
 
 const IndexPage = () => (
   <App>
