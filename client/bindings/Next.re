@@ -29,3 +29,10 @@ module Router = {
   [@bs.module "next/router"]
   external useRouter: unit => Js.t('a) = "useRouter";
 };
+
+module Config = {
+  [@bs.module "next/config"] external getConfig: unit => 'a = "default";
+};
+module Dynamic = {
+  [@bs.module "next/dynamic"] external dynamic: unit => 'a = "default";
+};

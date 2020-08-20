@@ -119,3 +119,5 @@ let make = (~service_url) => {
         </div>
       </div>;
 };
+
+let default = make;
