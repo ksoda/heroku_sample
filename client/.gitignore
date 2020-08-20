@@ -47,3 +47,5 @@ node_modules/
 .bsb.lock
 
 dist/
+.next
+

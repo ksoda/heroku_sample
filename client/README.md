@@ -2,49 +2,31 @@
 
 ## Dev
 
-```sh
+```bash
 npm install
-npm run server
-# in a new tab
-npm start
+npm run dev
 ```
 
-Open a new web page to `http://localhost:8000/`. Change any `.re` file in `src` to see the page auto-reload. **You don't need any bundler when you're developing**!
+There are 2 convenience scripts to facilitate running these separate processes:
 
-**How come we don't need any bundler during development**? We highly encourage you to open up `index.html` to check for yourself!
+1. `npm run dev:reason` - This script will start the ReasonML toolchain in
+   watch mode to re-compile whenever you make changes.
+2. `npm run dev:next` - This script will start the next.js development server
+   so that you will be able to access your site at the location output by the
+   script. This will also hot reload as you make changes.
 
-<details>
-<summary>Features Used</summary>
-
-|                           | Fetch Dog Pictures | Reason Using JS Using Reason |
-| ------------------------- | ------------------ | ---------------------------- |
-| Has props                 |                    | ✓                            |
-| No state                  |                    | ✓                            |
-| Has state                 | ✓                  |                              |
-| ReasonReact using ReactJS |                    | ✓                            |
-| ReactJS using ReasonReact |                    | ✓                            |
-| useEffect                 | ✓                  |                              |
-| Dom attribute             |                    | ✓                            |
-| Styling                   | ✓                  | ✓                            |
-| React.array               | ✓                  |                              |
-
-</details>
-
-## Bundle for Production
-
-```sh
-npm run build
-```
-
-## Handle Routing Yourself
-
-To serve the files, this template uses a minimal dependency called `moduleserve`. A URL such as `localhost:8000/scores/john` resolves to the file `scores/john.html`. If you'd like to override this and handle URL resolution yourself, change the `server` command in `package.json` from `moduleserve ./ --port 8000` to `moduleserve ./ --port 8000 --spa` (for "single page application"). This will make `moduleserve` serve the default `index.html` for any URL. Since `index.html` loads `Main.bs.js`, you can grab hold of the URL in the corresponding `Index.re` and do whatever you want.
-
-By the way, ReasonReact comes with a small [router](https://reasonml.github.io/reason-react/docs/en/router) you might be interested in.
-
-## Development Enviroment
+### Enviroment
 
 ```sh
 opam switch 4.06.1
 opam install reason merlin refmt rtop
+```
+
+## Bundle for Production
+
+Build and run:
+
+```bash
+npm run build
+npm run start
 ```

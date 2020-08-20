@@ -9,7 +9,8 @@ describe("Todo", () => {
   Expect.(
     test("render", () => {
       let tree =
-        create(<TodoApp service_url="http://localhost:3000" />) |> toJSON;
+        create(<TodoAppLegacy service_url="http://localhost:3000" />)
+        |> toJSON;
       expect(tree) |> toMatchSnapshot;
     })
   )

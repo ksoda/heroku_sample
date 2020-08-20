@@ -1,3 +1,5 @@
+[@bs.module "isomorphic-unfetch"] external fetch: string => 'a = "default";
+
 let service_url = ref("");
 let tasksUrl = () => {
   let url = service_url^;
