@@ -8,6 +8,7 @@
     "build": "npm run build:reason && next build",
     "build:reason": "bsb -clean-world -make-world",
     "start": "next start",
+    "export": "next export",
     "clean": "bsb -clean-world",
     "format": "find bindings/ components/ pages/ src/ __tests__/ -name '*.re' | xargs refmt --in-place",
     "test": "npm run build:reason && jest",

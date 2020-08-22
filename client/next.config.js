@@ -5,6 +5,7 @@ module.exports = {
     pageExtensions: ["jsx", "js", "bs.js"],
   }),
   publicRuntimeConfig: {
-    service_url: process.env.SERVICE_URL || "http://localhost:8080",
+    service_url: process.env.SERVICE_URL || "http://localhost:3000",
   },
+  trailingSlash: true,
 };
