@@ -11,9 +11,9 @@ resource "netlify_site" "main" {
   name = var.server_name
 
   repo {
-    command       = "cd client && npm install && npm run build"
-    dir           = "client/dist/"
+    command       = "cd client && npm install && npm run build && npm run export"
     deploy_key_id = netlify_deploy_key.key.id
+    dir           = "client/out/"
     provider      = "github"
     repo_path     = "ksoda/todo-app"
     repo_branch   = "master"
