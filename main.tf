@@ -5,21 +5,21 @@ terraform {
 
 variable "prefix" {
   description = "High-level name of this configuration, used as a resource name prefix"
-  type        = "string"
+  type        = string
   default     = ""
 }
 variable "netlify_token" {
   description = "The domain name of your server"
-  type        = "string"
+  type        = string
 }
 
 
 output "server_url" {
-  value = "${module.server.app_url}"
+  value = module.server.app_url
 }
 
 output "client_url" {
-  value = "${module.client.app_url}"
+  value = module.client.app_url
 }
 
 
@@ -37,5 +37,5 @@ module "server" {
 module "client" {
   source        = "./netlify"
   server_name   = "${var.prefix}${random_pet.sample.id}-${random_integer.sample.result}"
-  netlify_token = "${var.netlify_token}"
+  netlify_token = var.netlify_token
 }

@@ -3,12 +3,12 @@ provider "heroku" {
 }
 
 resource "heroku_app" "default" {
-  name   = "${var.server_name}"
+  name   = var.server_name
   region = "us"
   stack  = "container"
 }
 
 resource "heroku_addon" "database" {
-  app  = "${heroku_app.default.name}"
+  app  = heroku_app.default.name
   plan = "heroku-postgresql:hobby-dev"
 }
