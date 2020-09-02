@@ -49,15 +49,17 @@ export default function PostList() {
   return (
     <section>
       <ul>
-        {todos.map((post, index) => (
-          <li key={post.id}>
-            <div>
-              <span>{post.done ? "v" : "o"}. </span>
-              <a href={post.url}>{post.text}</a>
-              <PostUpvoter id={post.id} votes={post.votes} />
-            </div>
-          </li>
-        ))}
+        {Array.from(todos)
+          .reverse()
+          .map((post, index) => (
+            <li key={index}>
+              <div>
+                <span>{post.done ? "v" : "o"}. </span>
+                <a href={post.url}>{post.text}</a>
+                <PostUpvoter id={post.id} votes={post.votes} />
+              </div>
+            </li>
+          ))}
       </ul>
       {areMoreTodos && (
         <button onClick={() => loadMorePosts()} disabled={loadingMorePosts}>

@@ -1,44 +1,41 @@
 import { gql, useMutation } from "@apollo/client";
 import { ALL_POSTS_QUERY, allPostsQueryVars } from "./PostList";
 
-const CREATE_POST_MUTATION = gql`
-  mutation createPost($title: String!, $url: String!) {
-    createPost(title: $title, url: $url) {
-      id
-      title
-      votes
-      url
-      createdAt
+const CREATE_TODO_MUTATION = gql`
+  mutation createTodo($item: String!) {
+    createTodo(input: { text: $item, userId: "1" }) {
+      text
+      done
+      user {
+        name
+      }
     }
   }
 `;
 
 export default function Submit() {
-  const [createPost, { loading }] = useMutation(CREATE_POST_MUTATION);
+  const [createPost, { loading }] = useMutation(CREATE_TODO_MUTATION);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.target;
     const formData = new window.FormData(form);
-    const title = formData.get("title");
-    const url = formData.get("url");
+    const item = formData.get("title");
     form.reset();
 
     createPost({
-      variables: { title, url },
+      variables: { item },
       update: (proxy, { data: { createPost } }) => {
         const data = proxy.readQuery({
           query: ALL_POSTS_QUERY,
-          variables: allPostsQueryVars,
         });
         // Update the cache with the new post at the top of the list
         proxy.writeQuery({
           query: ALL_POSTS_QUERY,
-          data: {
-            ...data,
-            allPosts: [createPost, ...data.allPosts],
-          },
-          variables: allPostsQueryVars,
+          // data: {
+          //   ...data,
+          //   todos: [createPost, ...data.todos],
+          // },
         });
       },
     });
@@ -48,7 +45,6 @@ export default function Submit() {
     <form onSubmit={handleSubmit}>
       <h1>Submit</h1>
       <input placeholder="title" name="title" type="text" required />
-      <input placeholder="url" name="url" type="url" required />
       <button type="submit" disabled={loading}>
         Submit
       </button>

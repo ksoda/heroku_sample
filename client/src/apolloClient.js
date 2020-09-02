@@ -15,7 +15,7 @@ function createApolloClient() {
       typePolicies: {
         Query: {
           fields: {
-            allPosts: concatPagination(),
+            todos: concatPagination(),
           },
         },
       },
