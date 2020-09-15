@@ -10,10 +10,7 @@ client:
 	cd client/ && npm install && env SERVICE_URL=http://localhost:3000/ npm run build
 
 run_server: server ## Run server
-	cd server/ && diesel database setup && docker run --rm --net=host -e RESOURCE_SHARING_URL=http://localhost:8000/ -e DATABASE_URL=postgres://postgres:secret@localhost/todo todo
+	cd server-next/ && docker run --rm --net=host -e RESOURCE_SHARING_URL=http://localhost:8000/ todo
 
 server:
-	cd server/ && docker build -t todo .
-
-database: ## Start DB
-	docker run --rm --net=host -e POSTGRES_PASSWORD=secret postgres
+	cd server-next/ && docker build -t todo .
