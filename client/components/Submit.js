@@ -1,20 +1,18 @@
 import { gql, useMutation } from "@apollo/client";
-import { ALL_POSTS_QUERY, allPostsQueryVars } from "./PostList";
-
-const CREATE_TODO_MUTATION = gql`
-  mutation createTodo($item: String!) {
-    createTodo(input: { text: $item, userId: "1" }) {
-      text
-      done
-      user {
-        name
-      }
-    }
-  }
-`;
+import { ALL_POSTS_QUERY } from "./PostList";
 
 export default function Submit() {
-  const [createPost, { loading }] = useMutation(CREATE_TODO_MUTATION);
+  const [createPost, { loading }] = useMutation(gql`
+    mutation createTodo($item: String!) {
+      createTodo(input: { text: $item, userId: "1" }) {
+        text
+        done
+        user {
+          name
+        }
+      }
+    }
+  `);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -32,10 +30,10 @@ export default function Submit() {
         // Update the cache with the new post at the top of the list
         proxy.writeQuery({
           query: ALL_POSTS_QUERY,
-          // data: {
-          //   ...data,
-          //   todos: [createPost, ...data.todos],
-          // },
+          data: {
+            ...data,
+            todos: [createPost, ...data.todos],
+          },
         });
       },
     });

@@ -14,16 +14,10 @@ export const ALL_POSTS_QUERY = gql`
   }
 `;
 
-export const allPostsQueryVars = {
-  skip: 0,
-  first: 10,
-};
-
 export default function PostList() {
   const { loading, error, data, fetchMore, networkStatus } = useQuery(
     ALL_POSTS_QUERY,
     {
-      variables: allPostsQueryVars,
       // Setting this value to true will make the component rerender when
       // the "networkStatus" changes, so we are able to know if it is fetching
       // more data
