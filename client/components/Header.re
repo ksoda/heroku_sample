@@ -13,14 +13,6 @@ let make = () => {
     <Next.Link href="/">
       <a style=styles> {ReasonReact.string("Home")} </a>
     </Next.Link>
-    <Next.Link href="/about">
-      <a style=styles> {ReasonReact.string("About")} </a>
-    </Next.Link>
-    <Next.Link href="/apollo">
-      <a style=styles className={pathname === "/apollo" ? "is-active" : ""}>
-        {ReasonReact.string("Apollo")}
-      </a>
-    </Next.Link>
     <Next.Link href="/client-only">
       <a
         style=styles
