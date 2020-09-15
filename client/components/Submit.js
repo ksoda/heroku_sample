@@ -23,16 +23,17 @@ export default function Submit() {
 
     createPost({
       variables: { item },
-      update: (proxy, { data: { createPost } }) => {
+      update: (proxy, { data: { createTodo } }) => {
         const data = proxy.readQuery({
           query: ALL_POSTS_QUERY,
         });
+
         // Update the cache with the new post at the top of the list
         proxy.writeQuery({
           query: ALL_POSTS_QUERY,
           data: {
             ...data,
-            todos: [createPost, ...data.todos],
+            todos: [...data.todos, createTodo],
           },
         });
       },
