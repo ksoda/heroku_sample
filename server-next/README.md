@@ -20,4 +20,11 @@ query findTodos {
     }
   }
 }
+
+mutation toggleTodo {
+  toggleTodo(done: true, id: "T89") {
+    id
+    done
+  }
+}
 ```
