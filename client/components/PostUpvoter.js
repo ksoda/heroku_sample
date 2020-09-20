@@ -1,44 +1,27 @@
 import { gql, useMutation } from "@apollo/client";
 
-export default function PostUpvoter({ votes, id }) {
-  const [updatePost] = useMutation(
+export default function TodoToggler({ todo }) {
+  const [updateTodo] = useMutation(
     gql`
-      mutation votePost($id: String!) {
-        votePost(id: $id) {
+      mutation toggleTodo($done: Boolean!, $id: ID!) {
+        toggleTodo(done: $done, id: $id) {
           id
-          votes
-          __typename
+          done
         }
       }
     `
   );
 
-  const upvotePost = () => {
-    updatePost({
+  const toggleTodo = () => {
+    updateTodo({
       variables: {
-        id,
-      },
-      optimisticResponse: {
-        __typename: "Mutation",
-        votePost: {
-          __typename: "Post",
-          id,
-          votes: votes + 1,
-        },
+        done: !todo.done,
+        id: todo.id,
       },
     });
   };
 
   return (
-    <button onClick={() => upvotePost()}>
-      {votes}
-      <style jsx>{`
-        button {
-          background-color: transparent;
-          border: 1px solid #e4e4e4;
-          color: #000;
-        }
-      `}</style>
-    </button>
+    <input type="checkbox" checked={todo.done} onChange={() => toggleTodo()} />
   );
 }

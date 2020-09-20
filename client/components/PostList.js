@@ -1,10 +1,11 @@
 import { gql, useQuery, NetworkStatus } from "@apollo/client";
 import ErrorMessage from "./ErrorMessage";
-import PostUpvoter from "./PostUpvoter";
+import TodoToggler from "./PostUpvoter";
 
 export const ALL_POSTS_QUERY = gql`
   query findTodos {
     todos {
+      id
       text
       done
       user {
@@ -45,13 +46,13 @@ export default function PostList() {
       <ul>
         {Array.from(todos)
           .reverse()
-          .map((post, index) => (
+          .map((todo, index) => (
             <li key={index}>
-              <div>
-                <span>{post.done ? "v" : "o"}. </span>
-                <a href={post.url}>{post.text}</a>
-                <PostUpvoter id={post.id} votes={post.votes} />
-              </div>
+              <label>
+                <TodoToggler todo={todo} />
+                {todo.text}
+                {todo.id}
+              </label>
             </li>
           ))}
       </ul>
