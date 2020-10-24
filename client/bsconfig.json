@@ -1,40 +1,34 @@
 {
-  "name": "reason-react-examples",
-  "reason": {
-    "react-jsx": 3
-  },
+  "name": "rescript-nextjs-template",
+  "namespace": false,
+  "reason": { "react-jsx": 3 },
+  "refmt": 3,
+  "bs-dependencies": ["reason-react", "reason-apollo", "reason-apollo-hooks"],
+  "bs-dev-dependencies": ["@glennsl/bs-jest"],
+  "ppx-flags": ["@baransu/graphql_ppx_re/ppx", "get_in_ppx/ppx"],
   "sources": [
-    {
-      "dir": "src",
-      "subdirs": true
-    },
     {
       "dir": "__tests__",
       "type": "dev"
     },
-    {
-      "dir": "components",
-      "subdirs": true
-    },
-    {
-      "dir": "pages",
-      "subdirs": true
-    },
-    {
-      "dir": "bindings",
-      "subdirs": true
-    }
+    { "dir": "common" },
+    { "dir": "bindings" },
+    { "dir": "pages", "subdirs": true },
+    { "dir": "components", "subdirs": true },
+    "layouts"
   ],
-  "bsc-flags": ["-bs-super-errors", "-bs-no-version-header"],
-  "package-specs": [
-    {
-      "module": "es6",
-      "in-source": true
-    }
-  ],
-  "suffix": ".bs.js",
-  "namespace": true,
-  "bs-dependencies": ["reason-react", "@glennsl/bs-json", "bs-fetch"],
-  "bs-dev-dependencies": ["@glennsl/bs-jest"],
-  "refmt": 3
+  "package-specs": {
+    "module": "es6",
+    "in-source": true
+  },
+  "suffix": ".js",
+  "warnings": {
+    "error": "+101+8"
+  },
+  "bsc-flags": ["-bs-no-version-header", "-bs-super-errors", "-bs-g"],
+  "gentypeconfig": {
+    "language": "untyped",
+    "shims": [],
+    "module": "es6"
+  }
 }

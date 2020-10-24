@@ -5,7 +5,7 @@ module.exports = (env, argv) => {
   /** @type import('webpack').Configuration */
   const settings = {
     context: path.resolve(__dirname, "src"),
-    entry: "./Main.bs.js",
+    entry: "./Main.js",
     devServer: {
       overlay: true,
       progress: true,

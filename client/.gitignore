@@ -1,52 +1,16 @@
-
-# Created by https://www.gitignore.io/api/reasonml,ocaml
-# Edit at https://www.gitignore.io/?templates=reasonml,ocaml
-
-### OCaml ###
-*.annot
-*.cmo
-*.cma
-*.cmi
-*.a
-*.o
-*.cmx
-*.cmxs
-*.cmxa
-
-# ocamlbuild working directory
-_build/
-
-# ocamlbuild targets
-*.byte
-*.native
-
-# oasis generated files
-setup.data
-setup.log
-
-# Merlin configuring file for Vim and Emacs
-.merlin
-
-# Dune generated files
-*.install
-
-# Local OPAM switch
-_opam/
-
-# Esy-related generated files
-_esy/
-_build.prev/
-node_modules/
-
-### Reasonml ###
-/lib
-
-# End of https://www.gitignore.io/api/reasonml,ocaml
+out
 
 *.bs.js
+.DS_Store
+*.swp
+*.swo
+
+node_modules/
+.next/
+
+yarn-error.log
+
 .bsb.lock
-
-dist/
-.next
-out/
-
+.merlin
+lib/
+.graphql_ppx_cache

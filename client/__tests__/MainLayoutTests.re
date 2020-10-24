@@ -8,9 +8,7 @@ external create: React.element => react_test_renderer_context = "create";
 describe("Todo", () => {
   Expect.(
     test("render", () => {
-      let tree =
-        create(<TodoAppLegacy service_url="http://localhost:3000" />)
-        |> toJSON;
+      let tree = create(<MainLayout> <div /> </MainLayout>) |> toJSON;
       expect(tree) |> toMatchSnapshot;
     })
   )

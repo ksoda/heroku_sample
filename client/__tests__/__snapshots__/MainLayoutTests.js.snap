@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Todo render 1`] = `
+<div
+  className="flex lg:justify-center"
+  style={
+    Object {
+      "minWidth": "20rem",
+    }
+  }
+>
+  <div
+    className="max-w-5xl w-full lg:w-3/4 text-gray-900 font-base"
+  >
+    <nav
+      className="p-2 h-12 flex border-b border-gray-200 justify-between items-center text-sm"
+    >
+      <a
+        className="flex items-center w-1/3"
+        href="/"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        <img
+          className="w-5"
+          src="/static/zeit-black-triangle.svg"
+        />
+        <span
+          className="text-xl ml-2 align-middle font-semibold"
+        >
+          Next
+          <span
+            className="text-orange-800"
+          >
+            RE
+          </span>
+        </span>
+      </a>
+      <div
+        className="flex w-2/3 justify-end"
+      >
+        <a
+          className="px-3"
+          href="/"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Home
+        </a>
+        <a
+          className="px-3"
+          href="/examples"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Examples
+        </a>
+        <a
+          className="px-3"
+          href="/client-only"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Examples
+        </a>
+        <a
+          className="px-3 font-bold"
+          href="https://github.com/ryyppy/nextjs-default"
+          target="_blank"
+        >
+          Github
+        </a>
+      </div>
+    </nav>
+    <main
+      className="mt-4 mx-4"
+    >
+      <div />
+    </main>
+  </div>
+</div>
+`;
