@@ -1,37 +1,31 @@
-FROM rust:1 as builder
+# Use the official Golang image to create a build artifact.
+# This is based on Debian and sets the GOPATH to /go.
+# https://hub.docker.com/_/golang
+FROM golang:1.13 as builder
 
-ENV USER=root
+# Create and change to the app directory.
+WORKDIR /app
 
-RUN cargo new --bin /var/local/project
-WORKDIR /var/local/project
+# Retrieve application dependencies using go modules.
+# Allows container builds to reuse downloaded dependencies.
+COPY go.* ./
+RUN go mod download
 
-COPY Cargo.lock Cargo.toml ./
-RUN cargo build --release \
-    && rm src/*.rs \
-    && rm ./target/release/deps/actix_todo*
+# Copy local code to the container image.
+COPY . ./
 
-RUN cargo install diesel_cli \
-    --no-default-features --features postgres
+# Build the binary.
+# -mod=readonly ensures immutable go.mod and go.sum in container builds.
+RUN CGO_ENABLED=0 GOOS=linux go build -mod=readonly -v -o server
 
-COPY src src
-RUN cargo build --release
+# Use the official Alpine image for a lean production container.
+# https://hub.docker.com/_/alpine
+# https://docs.docker.com/develop/develop-images/multistage-build/#use-multi-stage-builds
+FROM alpine:3
+RUN apk add --no-cache ca-certificates
 
-COPY migrations migrations
+# Copy the binary to the production image from the builder stage.
+COPY --from=builder /app/server /server
 
-FROM rust:1-slim-stretch
-RUN apt-get update \
-    && apt-get install -y \
-    curl \
-    libpq-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /var/local
-
-COPY --from=builder /var/local/project/target/release/actix-todo .
-
-COPY static static
-
-EXPOSE 3000
-
-CMD ["./actix-todo"]
+# Run the web service on container startup.
+CMD ["/server"]
