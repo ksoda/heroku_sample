@@ -147,14 +147,14 @@ let default = () => {
   <div>
     {switch (simple) {
      | Loading => <p> {React.string("Loading...")} </p>
-     | Data(data) => <ul> {
-            data##todos ->Belt.Array.map(todo => {
-           <li>
-             <p> {ReasonReact.string(todo##text)} </p>
-           </li>
-         })
-       ->ReasonReact.array
-      } </ul>
+     | Data(data) =>
+       <ul>
+         {data##todos
+          ->Belt.Array.map(todo => {
+              <li> <p> {ReasonReact.string(todo##tex)} </p> </li>
+            })
+          ->ReasonReact.array}
+       </ul>
      | NoData
      | Error(_) => <p> {React.string("Get off my lawn!")} </p>
      }}
